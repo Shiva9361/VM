@@ -1,4 +1,4 @@
-# Stack-Based Virtual Machine: ISA & Processor Mapping
+# Stack-Based Virtual Machine: ISA 
 
 ## 1. Overview of the Stack-Based VM Architecture
 
