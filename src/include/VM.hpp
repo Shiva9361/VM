@@ -8,6 +8,8 @@
 #include <vector>
 #include <cstdint>
 #include <stdexcept>
+#include <unordered_map>
+#include <object_factory.hpp>
 
 #ifdef VM_DEBUG
 #define VM_CPP_DEBUG // Enable debug output in VM.cpp
@@ -32,6 +34,7 @@ enum class Opcode : uint8_t
     DUP = 0x12,
     LOAD = 0x20,
     STORE = 0x21,
+    LOAD_ARG = 0x22,
     JMP = 0x30,
     JZ = 0x31,
     JNZ = 0x32,
@@ -64,6 +67,7 @@ private:
     std::vector<int> stack;
     std::vector<int> locals;
     std::vector<int> constantPool;
+    std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
     size_t ip;
     size_t sp;

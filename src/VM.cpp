@@ -5,7 +5,7 @@
 #include <algorithm>
 
 VM::VM(const std::vector<uint8_t> &filedata)
-    : ip(0)
+    : ip(0), fp(0)
 {
     loadFromBinary(filedata);
 
@@ -39,6 +39,13 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
         return val;
     };
 
+    auto read_uint8 = [&](size_t &off) -> uint8_t
+    {
+        if (off + 1 > filedata.size())
+            throw std::runtime_error("Unexpected EOF");
+        return filedata[off++];
+    };
+
     uint16_t version = read_uint32(offset);
     if (version != 1)
     {
@@ -52,12 +59,15 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
     uint32_t codeSize = read_uint32(offset);
     uint32_t globalsOffset = read_uint32(offset);
     uint32_t globalsSize = read_uint32(offset);
+    uint32_t classMetadataOffset = read_uint32(offset);
+    uint32_t classMetadataSize = read_uint32(offset);
 
     DBG("VM Version: " << version);
     DBG("Entry Point: " << entryPoint);
     DBG("Const Pool Offset: " << constPoolOffset << ", Size: " << constPoolSize);
     DBG("Code Offset: " << codeOffset << ", Size: " << codeSize);
     DBG("Globals Offset: " << globalsOffset << ", Size: " << globalsSize);
+    DBG("Class Metadata Offset: " << classMetadataOffset << ", Size: " << classMetadataSize);
 
     if (constPoolOffset + constPoolSize > filedata.size())
     {
@@ -66,8 +76,9 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
     constantPool.clear();
     // Assuming constant pool entries are 4-byte integers for simplicity:
     if (constPoolSize % 4 != 0)
+    {
         throw std::runtime_error("Constant pool size not multiple of 4");
-
+    }
     size_t numConsts = constPoolSize / 4;
     constantPool.reserve(numConsts);
 
@@ -80,13 +91,17 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
 
     locals.clear();
     if (globalsOffset + globalsSize > filedata.size())
+    {
         throw std::runtime_error("Globals section out of file bounds");
-
+    }
     if (globalsSize % 4 != 0)
+    {
         throw std::runtime_error("Globals section size not multiple of 4");
+    }
 
     size_t numGlobals = globalsSize / 4;
     locals.reserve(numGlobals);
+
     for (size_t i = 0; i < numGlobals; i++)
     {
         size_t pos = globalsOffset + i * 4;
@@ -108,6 +123,84 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
         std::cerr << std::hex << (int)b << ' ';
     std::cerr << std::endl;
 #endif
+
+    if (classMetadataOffset + classMetadataSize > filedata.size())
+    {
+        throw std::runtime_error("Class metadata section out of file bounds");
+    }
+
+    size_t classMetaEnd = classMetadataOffset + classMetadataSize;
+    size_t classOffset = classMetadataOffset;
+
+    if (classMetadataSize != 0)
+    {
+
+        classes.clear();
+
+        uint32_t classCount = read_uint32(classOffset);
+
+        for (uint32_t i = 0; i < classCount; i++)
+        {
+            ClassInfo cls;
+
+            uint8_t classNameLen = read_uint8(classOffset);
+            if (classOffset + classNameLen > classMetaEnd)
+                throw std::runtime_error("Class name exceeds metadata bounds");
+
+            cls.name.assign(reinterpret_cast<const char *>(&filedata[classOffset]), classNameLen);
+            classOffset += classNameLen;
+
+            cls.objectSize = 0;
+
+            cls.superClassIndex = static_cast<int32_t>(read_uint32(classOffset));
+
+            DBG("Class: " << cls.name << ", Superclass Index: " << cls.superClassIndex);
+
+            uint32_t fieldCount = read_uint32(classOffset);
+            for (uint32_t f = 0; f < fieldCount; f++)
+            {
+                FieldInfo field;
+
+                uint8_t fieldNameLen = read_uint8(classOffset);
+                if (classOffset + fieldNameLen + 1 > classMetaEnd)
+                    throw std::runtime_error("Field info exceeds metadata bounds\n Expected at least " + std::to_string(fieldNameLen + 1) + " bytes, but only " + std::to_string(classMetaEnd - classOffset) + " bytes remain");
+
+                field.name.assign(reinterpret_cast<const char *>(&filedata[classOffset]), fieldNameLen);
+                classOffset += fieldNameLen;
+
+                field.type = static_cast<FieldType>(read_uint8(classOffset));
+
+                cls.fields.push_back(field);
+                DBG("Field: " << field.name << " Type: " << static_cast<int>(field.type));
+            }
+
+            uint32_t methodCount = read_uint32(classOffset);
+            for (uint32_t m = 0; m < methodCount; m++)
+            {
+                MethodInfo method;
+
+                uint8_t methodNameLen = read_uint8(classOffset);
+
+                if (classOffset + methodNameLen + 4 > classMetaEnd)
+                    throw std::runtime_error("Method info exceeds metadata bounds \nExpected at least " + std::to_string(methodNameLen + 4) + " bytes, but only " + std::to_string(classMetaEnd - classOffset) + " bytes remain");
+
+                method.name.assign(reinterpret_cast<const char *>(&filedata[classOffset]), methodNameLen);
+                classOffset += methodNameLen;
+
+                method.bytecodeOffset = read_uint32(classOffset);
+
+                cls.methods.push_back(method);
+                DBG("Method: " << method.name << " Bytecode Offset: " << method.bytecodeOffset);
+            }
+
+            classes.push_back(std::move(cls));
+        }
+
+        if (classOffset != classMetaEnd)
+        {
+            throw std::runtime_error("Class metadata size mismatch after parsing");
+        }
+    }
 
     if (entryPoint >= code.size())
     {
@@ -201,6 +294,15 @@ void VM::run()
             break;
         }
 
+        case Opcode::LOAD_ARG:
+        {
+            uint8_t argIdx = fetch8();
+            int argVal = stack.at(fp - 2 - argIdx); // arguments are pushed in reverse order :)
+            push(argVal);
+            DBG("LOAD_ARG " + std::to_string((int)argIdx) + ", Value = " + std::to_string(argVal) + ", Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
         case Opcode::JMP:
         {
             uint16_t addr = fetch16();
@@ -225,7 +327,48 @@ void VM::run()
             break;
         }
         case Opcode::RET:
-            return;
+        {
+            if (fp == 0)
+            {
+                DBG("RET at base frame, halting execution.");
+                return;
+            }
+            if (fp < 1 || stack.size() < 2)
+            {
+                throw std::runtime_error("Stack underflow on RET");
+            }
+
+            int old_fp = stack[fp];
+
+            int return_ip = stack[fp - 1];
+
+            int itemsToPop = static_cast<int>(stack.size()) - (fp - 1);
+            int returnValue = pop();
+            for (int i = 0; i < itemsToPop - 1; i++)
+            {
+                pop();
+            }
+
+            fp = old_fp;
+            ip = return_ip;
+            push(returnValue);
+
+            DBG("RET to ip " << ip << ", restored FP = " << fp);
+            break;
+        }
+        case Opcode::CALL:
+        {
+            uint32_t methodOffset = fetch32();
+
+            push(ip);
+            push(fp);
+
+            fp = static_cast<int>(stack.size()) - 1;
+            ip = methodOffset;
+
+            DBG("CALL to offset " << methodOffset << ", return IP = " << stack[fp - 1] << ", FP = " << fp);
+            break;
+        }
 
         case Opcode::ICMP_EQ:
         {
@@ -252,7 +395,7 @@ void VM::run()
         case Opcode::NEW:
         {
             uint8_t classRef = fetch8();
-            push(classRef * 1000); // TODO: dummy handle
+
             break;
         }
         case Opcode::GETFIELD:
@@ -316,8 +459,8 @@ int VM::peek() const
 uint8_t VM::fetch8() { return code.at(ip++); }
 uint16_t VM::fetch16()
 {
-    uint16_t hi = fetch8();
     uint16_t lo = fetch8();
+    uint16_t hi = fetch8();
     return (hi << 8) | lo;
 }
 int32_t VM::fetch32()
@@ -326,5 +469,5 @@ int32_t VM::fetch32()
     int32_t b2 = fetch8();
     int32_t b3 = fetch8();
     int32_t b4 = fetch8();
-    return (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
+    return (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
 }
