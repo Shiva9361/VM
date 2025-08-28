@@ -9,7 +9,30 @@
 void ObjectFactory::registerClass(const ClassInfo &cls)
 {
     ClassInfo copy = cls;
+    computeLayout(copy);
     classes[copy.name] = std::move(copy);
+}
+
+void ObjectFactory::computeLayout(ClassInfo &cls)
+{
+    size_t offset = 0;
+    for (const auto &field : cls.fields)
+    {
+        cls.fieldOffsets[field.name] = offset;
+        switch (field.type)
+        {
+        case FieldType::INT:
+            offset += sizeof(int);
+            break;
+        case FieldType::OBJECT:       // other class objects
+            offset += sizeof(void *); // pointer size
+            break;
+        // TODO: add more types
+        default:
+            throw std::runtime_error("Unknown field type in computeLayout");
+        }
+    }
+    cls.objectSize = offset;
 }
 
 void *ObjectFactory::createObject(const std::string &className)

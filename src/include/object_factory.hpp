@@ -33,6 +33,7 @@ struct ClassInfo
     int32_t superClassIndex; // -1 if none
     std::vector<FieldInfo> fields;
     std::vector<MethodInfo> methods;
+    std::unordered_map<std::string, size_t> fieldOffsets;
     size_t objectSize; // TODO: compute this
 };
 
@@ -46,7 +47,6 @@ public:
 
 private:
     std::unordered_map<std::string, ClassInfo> classes;
-
     void computeLayout(ClassInfo &cls);
     void *heapAllocate(size_t size); // TODO: use a better allocator
     void heapFree(void *ptr);

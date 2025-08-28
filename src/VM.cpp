@@ -150,8 +150,6 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
             cls.name.assign(reinterpret_cast<const char *>(&filedata[classOffset]), classNameLen);
             classOffset += classNameLen;
 
-            cls.objectSize = 0;
-
             cls.superClassIndex = static_cast<int32_t>(read_uint32(classOffset));
 
             DBG("Class: " << cls.name << ", Superclass Index: " << cls.superClassIndex);
