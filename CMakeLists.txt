@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(vm
     src/main.cpp
     src/VM.cpp
+    src/object_factory.cpp
 )
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
