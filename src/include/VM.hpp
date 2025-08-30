@@ -54,6 +54,7 @@ class VM
 {
 public:
     VM(const std::vector<uint8_t> &filedata);
+    ~VM(); // Added by Mokshith
     void loadFromBinary(const std::vector<uint8_t> &filedata);
 
     void run();
@@ -72,6 +73,9 @@ private:
     size_t ip;
     size_t sp;
     size_t fp;
+
+    ObjectFactory objectFactory; // Added by Mokshith
+    std::vector<void*> heap;  // Added by Mokshith  
 
     void push(int v);
     int pop();
