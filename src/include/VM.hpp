@@ -29,9 +29,16 @@ enum class Opcode : uint8_t
     IMUL = 0x03,
     IDIV = 0x04,
     INEG = 0x05,
+    FADD = 0x06,
+    FSUB = 0x07,
+    FMUL = 0x08,
+    FDIV = 0x09,
+    FNEG = 0x0A,
     PUSH = 0x10,
     POP = 0x11,
     DUP = 0x12,
+    FPOP = 0x13,
+    FPUSH = 0x14,
     LOAD = 0x20,
     STORE = 0x21,
     LOAD_ARG = 0x22,
@@ -43,11 +50,23 @@ enum class Opcode : uint8_t
     ICMP_EQ = 0x40,
     ICMP_LT = 0x41,
     ICMP_GT = 0x42,
+    FCMP_EQ = 0x43,
+    FCMP_LT = 0x44,
+    FCMP_GT = 0x45,
     NEW = 0x50,
     GETFIELD = 0x51,
     PUTFIELD = 0x52,
     INVOKEVIRTUAL = 0x53,
     INVOKESPECIAL = 0x54
+};
+
+union Value
+{
+    int32_t intValue;
+    float floatValue;
+    Value() : intValue(0) {}
+    Value(int v) : intValue(v) {}
+    Value(float v) : floatValue(v) {}
 };
 
 class VM
@@ -58,28 +77,28 @@ public:
     void loadFromBinary(const std::vector<uint8_t> &filedata);
 
     void run();
-    int top() const;
+    Value top() const;
 
 private:
     static constexpr int STACK_SIZE = 1024;
     static constexpr int LOCALS_SIZE = 256;
     static constexpr int CONST_POOL_SIZE = 256;
 
-    std::vector<int> stack;
+    std::vector<Value> stack;
     std::vector<int> locals;
     std::vector<int> constantPool;
     std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
-    size_t ip;
-    size_t sp;
-    size_t fp;
+    u_int ip;
+    u_int sp;
+    u_int fp;
 
     ObjectFactory objectFactory; // Added by Mokshith
-    std::vector<void*> heap;  // Added by Mokshith  
+    std::vector<void *> heap;    // Added by Mokshith
 
-    void push(int v);
-    int pop();
-    int peek() const;
+    void push(Value v);
+    Value pop();
+    Value peek() const;
 
     uint8_t fetch8();
     uint16_t fetch16();
