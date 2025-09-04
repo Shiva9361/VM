@@ -16,6 +16,8 @@ VM::VM(const std::vector<uint8_t> &filedata)
     }
     /* Code Added By Mokshith - End*/
 
+    objectFactory.buildAllVTables();
+
     stack.reserve(STACK_SIZE);
     locals.resize(LOCALS_SIZE, 0);
 }
@@ -576,8 +578,22 @@ void VM::run()
         }
         case Opcode::INVOKEVIRTUAL:
         {
-            uint8_t methRef = fetch8();
-            push(Value()); // stub return
+            uint32_t methodOffset = fetch8();
+            int32_t objRef = pop().intValue;
+
+            if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
+            {
+                throw std::runtime_error("INVOKEVIRTUAL error: Invalid object reference.");
+            }
+            void *objectData = heap.at(objRef);
+            void *rawMemory = static_cast<char *>(objectData) - sizeof(void *); // remove cls metadata header
+            const ClassInfo *cls = *static_cast<const ClassInfo **>(rawMemory);
+
+            push(Value(static_cast<int>(ip)));
+            push(Value(static_cast<int>(fp)));
+            fp = static_cast<int>(stack.size()) - 1;
+            ip = cls->vtable[methodOffset]->bytecodeOffset;
+            DBG("INVOKEVIRTUAL to offset " + std::to_string(cls->vtable[methodOffset]->bytecodeOffset));
             break;
         }
         case Opcode::INVOKESPECIAL:
@@ -586,12 +602,7 @@ void VM::run()
             // break;
 
             // Code added by Mokshith - Start
-            uint32_t methodOffset = fetch32();
-            push(Value(static_cast<int>(ip)));
-            push(Value(static_cast<int>(fp)));
-            fp = static_cast<int>(stack.size()) - 1;
-            ip = methodOffset;
-            DBG("INVOKESPECIAL to offset " << methodOffset);
+
             break;
             // Code added by Mokshith - End
         }
