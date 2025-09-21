@@ -1,14 +1,17 @@
-# build_arm.sh (in your friend's VM project folder)
 #!/bin/bash
-rm -rf build_arm
-mkdir build_arm
-# Tell CMake to use our new toolchain file
-cmake -B build_arm -DCMAKE_TOOLCHAIN_FILE=arm-toolchain.cmake
+set -e # Exit immediately if a command exits with a non-zero status.
 
-cd build_arm
+mkdir -p build
+cd build
+
+# Configure using the toolchain file
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../arm-toolchain.cmake
+
+# Build the project
 make
 
-# Convert the final ELF into a raw binary for our OS to load
-arm-none-eabi-objcopy -O binary vm.elf vm.bin
-cd ..
-echo "ARM VM binary created at build_arm/vm.bin"
+# The copy command is now redundant since the post-build step in CMake
+# already places vm.bin in the parent directory.
+# cp vm.bin ../
+
+echo "VM built successfully."
