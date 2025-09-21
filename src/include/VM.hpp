@@ -77,16 +77,16 @@ public:
     void loadFromBinary(const std::vector<uint8_t> &filedata);
 
     void run();
-    Value top() const;
+    uint32_t top() const;
 
 private:
     static constexpr int STACK_SIZE = 1024;
     static constexpr int LOCALS_SIZE = 256;
     static constexpr int CONST_POOL_SIZE = 256;
 
-    std::vector<Value> stack;
-    std::vector<int> locals;
-    std::vector<int> constantPool;
+    std::vector<uint32_t> stack;
+    std::vector<uint32_t> locals;
+    std::vector<uint32_t> constantPool;
     std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
     uint32_t ip;
@@ -96,9 +96,9 @@ private:
     ObjectFactory objectFactory; // Added by Mokshith
     std::vector<void *> heap;    // Added by Mokshith
 
-    void push(Value v);
-    Value pop();
-    Value peek() const;
+    void push(uint32_t v);
+    uint32_t pop();
+    uint32_t peek() const;
 
     uint8_t fetch8();
     uint16_t fetch16();

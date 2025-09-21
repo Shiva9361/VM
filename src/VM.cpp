@@ -3,6 +3,7 @@
  */
 #include <VM.hpp>
 #include <algorithm>
+#include <cstring>
 
 VM::VM(const std::vector<uint8_t> &filedata)
     : ip(0), fp(0)
@@ -239,86 +240,110 @@ void VM::run()
 
         case Opcode::IADD:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a + b);
-            DBG("IADD, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("IADD, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::ISUB:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a - b);
-            DBG("ISUB, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("ISUB, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::IMUL:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a * b);
-            DBG("IMUL, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("IMUL, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::IDIV:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             if (b == 0)
                 throw std::runtime_error("Division by zero");
             push(a / b);
-            DBG("IDIV, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("IDIV, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::INEG:
         {
-            int a = pop().intValue;
+            int a = pop();
             push(-a);
-            DBG("INEG, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("INEG, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FADD:
         {
-            float b = pop().floatValue, a = pop().floatValue;
-            push(a + b);
-            DBG("FADD, Stack top = " + std::to_string(stack.back().floatValue));
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            float cf = af + bf;
+            std::memcpy(&a, &cf, sizeof(float));
+            push(a);
+            DBG("FADD, Stack top = " + std::to_string(cf));
             break;
         }
         case Opcode::FSUB:
         {
-            float b = pop().floatValue, a = pop().floatValue;
-            push(a - b);
-            DBG("FSUB, Stack top = " + std::to_string(stack.back().floatValue));
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            float cf = af - bf;
+            std::memcpy(&a, &cf, sizeof(float));
+            push(a);
+            DBG("FSUB, Stack top = " + std::to_string(cf));
             break;
         }
         case Opcode::FMUL:
         {
-            float b = pop().floatValue, a = pop().floatValue;
-            push(a * b);
-            DBG("FMUL, Stack top = " + std::to_string(stack.back().floatValue));
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            float cf = af * bf;
+            std::memcpy(&a, &cf, sizeof(float));
+            push(a);
+            DBG("FMUL, Stack top = " + std::to_string(cf));
             break;
         }
         case Opcode::FDIV:
         {
-            float b = pop().floatValue, a = pop().floatValue;
-            if (b == 0.0f)
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            if (bf == 0.0f)
                 throw std::runtime_error("Division by zero");
-            push(a / b);
-            DBG("FDIV, Stack top = " + std::to_string(stack.back().floatValue));
+            float cf = af / bf;
+            std::memcpy(&a, &cf, sizeof(float));
+            push(a);
+            DBG("FDIV, Stack top = " + std::to_string(cf));
             break;
         }
 
         case Opcode::FNEG:
         {
-            float a = pop().floatValue;
-            push(-a);
-            DBG("FNEG, Stack top = " + std::to_string(stack.back().floatValue));
+            uint32_t a = pop();
+            float af;
+            std::memcpy(&af, &a, sizeof(float));
+            af = -af;
+            std::memcpy(&a, &af, sizeof(float));
+            push(a);
+            DBG("FNEG, Stack top = " + std::to_string(af));
             break;
         }
 
         case Opcode::PUSH:
         {
             int32_t val = fetch32();
-            push(Value((int)val));
-            DBG("PUSH " + std::to_string(val) + ", Stack top = " + std::to_string(stack.back().intValue));
+            push(val);
+            DBG("PUSH " + std::to_string(val) + ", Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::POP:
@@ -333,8 +358,10 @@ void VM::run()
             float val;
             uint32_t raw = fetch32();
             std::copy(reinterpret_cast<uint8_t *>(&raw), reinterpret_cast<uint8_t *>(&raw) + 4, reinterpret_cast<uint8_t *>(&val));
-            push(val);
-            DBG("FPUSH " + std::to_string(val) + ", Stack top = " + std::to_string(stack.back().floatValue));
+            uint32_t value;
+            std::memcpy(&value, &val, sizeof(uint32_t));
+            push(value);
+            DBG("FPUSH " + std::to_string(val) + ", Stack top = " + std::to_string(val));
             break;
         }
 
@@ -347,9 +374,8 @@ void VM::run()
 
         case Opcode::DUP:
         {
-            Value v = peek();
-            push(v);
-            DBG("DUP, Stack top = " + std::to_string(stack.back().intValue));
+            push(peek());
+            DBG("DUP, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
@@ -357,13 +383,13 @@ void VM::run()
         {
             uint8_t idx = fetch8();
             push(locals.at(idx));
-            DBG("LOAD " + std::to_string((int)idx) + ", Value = " + std::to_string(locals.at(idx)) + ", Stack top = " + std::to_string(stack.back().intValue));
+            DBG("LOAD " + std::to_string((int)idx) + ", Value = " + std::to_string(locals.at(idx)) + ", Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::STORE:
         {
             uint8_t idx = fetch8();
-            locals.at(idx) = pop().intValue;
+            locals.at(idx) = pop();
             DBG("STORE " + std::to_string((int)idx) + ", Value = " + std::to_string(locals.at(idx)));
             break;
         }
@@ -371,9 +397,9 @@ void VM::run()
         case Opcode::LOAD_ARG:
         {
             uint8_t argIdx = fetch8();
-            Value argVal = stack.at(fp - 2 - argIdx); // arguments are pushed in reverse order :)
+            uint32_t argVal = stack.at(fp - 2 - argIdx); // arguments are pushed in reverse order :)
             push(argVal);
-            DBG("LOAD_ARG " + std::to_string((int)argIdx) + ", Value = " + std::to_string(argVal.intValue) + ", Stack top = " + std::to_string(stack.back().intValue));
+            DBG("LOAD_ARG " + std::to_string((int)argIdx) + ", Value = " + std::to_string(argVal) + ", Stack top = " + std::to_string(stack.back()));
             break;
         }
 
@@ -387,7 +413,7 @@ void VM::run()
         case Opcode::JZ:
         {
             uint16_t addr = fetch16();
-            if (pop().intValue == 0)
+            if (pop() == 0)
                 ip = addr;
             DBG("JZ to " + std::to_string(addr));
             break;
@@ -395,7 +421,7 @@ void VM::run()
         case Opcode::JNZ:
         {
             uint16_t addr = fetch16();
-            if (pop().intValue != 0)
+            if (pop() != 0)
                 ip = addr;
             DBG("JNZ to " + std::to_string(addr));
             break;
@@ -412,12 +438,12 @@ void VM::run()
                 throw std::runtime_error("Stack underflow on RET");
             }
 
-            int old_fp = stack[fp].intValue;
+            uint32_t old_fp = stack[fp];
 
-            int return_ip = stack[fp - 1].intValue;
+            uint32_t return_ip = stack[fp - 1];
 
-            int itemsToPop = static_cast<int>(stack.size()) - (fp - 1);
-            Value returnValue = pop();
+            uint32_t itemsToPop = static_cast<int>(stack.size()) - (fp - 1);
+            uint32_t returnValue = pop();
             for (int i = 0; i < itemsToPop - 1; i++)
             {
                 pop();
@@ -440,53 +466,53 @@ void VM::run()
             fp = static_cast<int>(stack.size()) - 1;
             ip = methodOffset;
 
-            DBG("CALL to offset " << methodOffset << ", return IP = " << stack[fp - 1].intValue << ", FP = " << fp);
+            DBG("CALL to offset " + std::to_string(methodOffset) + ", return IP = " + std::to_string(stack[fp - 1]) + ", FP = " + std::to_string(fp));
             break;
         }
 
         case Opcode::ICMP_EQ:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a == b ? 1 : 0);
-            DBG("ICMP_EQ, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("ICMP_EQ, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::ICMP_LT:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a < b ? 1 : 0);
-            DBG("ICMP_LT, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("ICMP_LT, Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::ICMP_GT:
         {
-            int b = pop().intValue, a = pop().intValue;
+            int b = pop(), a = pop();
             push(a > b ? 1 : 0);
-            DBG("ICMP_GT, Stack top = " + std::to_string(stack.back().intValue));
+            DBG("ICMP_GT, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FCMP_EQ:
         {
-            float b = pop().floatValue, a = pop().floatValue;
+            float b = pop(), a = pop();
             push(a == b ? 1 : 0);
-            DBG("FCMP_EQ, Stack top = " + std::to_string(stack.back().floatValue));
+            DBG("FCMP_EQ, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FCMP_LT:
         {
-            float b = pop().floatValue, a = pop().floatValue;
+            float b = pop(), a = pop();
             push(a < b ? 1 : 0);
-            DBG("FCMP_LT, Stack top = " + std::to_string(stack.back().floatValue));
+            DBG("FCMP_LT, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FCMP_GT:
         {
-            float b = pop().floatValue, a = pop().floatValue;
+            float b = pop(), a = pop();
             push(a > b ? 1 : 0);
-            DBG("FCMP_GT, Stack top = " + std::to_string(stack.back().floatValue));
+            DBG("FCMP_GT, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
@@ -505,9 +531,7 @@ void VM::run()
             void *newObjectData = objectFactory.createObject(cls.name);
             heap.push_back(newObjectData);
             int32_t objRef = static_cast<int32_t>(heap.size() - 1);
-            Value v;
-            v.intValue = objRef;
-            push(v);
+            push(objRef);
             DBG("NEW " << cls.name << ", ObjRef: " << objRef);
             break;
             // Code added by Mokshith - end
@@ -521,7 +545,7 @@ void VM::run()
 
             // Code added by Mokshith - start
             uint8_t fieldIndex = fetch8();
-            int32_t objRef = pop().intValue;
+            int32_t objRef = pop();
             if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
             {
                 throw std::runtime_error("GETFIELD error: Invalid object reference.");
@@ -540,9 +564,7 @@ void VM::run()
             size_t offset = cls->fieldOffsets.at(field.name);
             char *baseAddress = static_cast<char *>(objectData);
             int32_t value = *reinterpret_cast<int32_t *>(baseAddress + offset);
-            Value v;
-            v.intValue = value;
-            push(v);
+            push(value);
             DBG("GETFIELD from ObjRef " + std::to_string(objRef) + " (" + cls->name + "." + field.name + "), Value = " + std::to_string(value));
             break;
             // Code added by Mokshith - End
@@ -559,8 +581,8 @@ void VM::run()
 
             // Code added by Mokshith - Start
             uint8_t fieldIndex = fetch8();
-            int32_t value = pop().intValue;
-            int32_t objRef = pop().intValue;
+            int32_t value = pop();
+            int32_t objRef = pop();
             if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
             {
                 throw std::runtime_error("PUTFIELD error: Invalid object reference.");
@@ -583,7 +605,7 @@ void VM::run()
         case Opcode::INVOKEVIRTUAL:
         {
             uint32_t methodOffset = fetch8();
-            int32_t objRef = pop().intValue;
+            int32_t objRef = pop();
 
             if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
             {
@@ -593,8 +615,8 @@ void VM::run()
             void *rawMemory = static_cast<char *>(objectData) - sizeof(void *); // remove cls metadata header
             const ClassInfo *cls = *static_cast<const ClassInfo **>(rawMemory);
 
-            push(Value(static_cast<int>(ip)));
-            push(Value(static_cast<int>(fp)));
+            push(ip);
+            push(fp);
             fp = static_cast<int>(stack.size()) - 1;
             ip = cls->vtable[methodOffset]->bytecodeOffset;
             DBG("INVOKEVIRTUAL to offset " + std::to_string(cls->vtable[methodOffset]->bytecodeOffset));
@@ -617,23 +639,23 @@ void VM::run()
     }
 }
 
-Value VM::top() const { return peek(); }
+uint32_t VM::top() const { return peek(); }
 
-void VM::push(Value v)
+void VM::push(uint32_t v)
 {
     if (stack.size() >= STACK_SIZE)
         throw std::runtime_error("Stack Overflow");
     stack.push_back(v);
 }
-Value VM::pop()
+uint32_t VM::pop()
 {
     if (stack.empty())
         throw std::runtime_error("Stack Underflow");
-    Value v = stack.back();
+    uint32_t v = stack.back();
     stack.pop_back();
     return v;
 }
-Value VM::peek() const
+uint32_t VM::peek() const
 {
     if (stack.empty())
         throw std::runtime_error("Empty stack");
