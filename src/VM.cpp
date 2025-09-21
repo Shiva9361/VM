@@ -317,7 +317,7 @@ void VM::run()
         case Opcode::PUSH:
         {
             int32_t val = fetch32();
-            push(val);
+            push(Value((int)val));
             DBG("PUSH " + std::to_string(val) + ", Stack top = " + std::to_string(stack.back().intValue));
             break;
         }
@@ -505,7 +505,9 @@ void VM::run()
             void *newObjectData = objectFactory.createObject(cls.name);
             heap.push_back(newObjectData);
             int32_t objRef = static_cast<int32_t>(heap.size() - 1);
-            push(objRef);
+            Value v;
+            v.intValue = objRef;
+            push(v);
             DBG("NEW " << cls.name << ", ObjRef: " << objRef);
             break;
             // Code added by Mokshith - end
@@ -538,7 +540,9 @@ void VM::run()
             size_t offset = cls->fieldOffsets.at(field.name);
             char *baseAddress = static_cast<char *>(objectData);
             int32_t value = *reinterpret_cast<int32_t *>(baseAddress + offset);
-            push(value);
+            Value v;
+            v.intValue = value;
+            push(v);
             DBG("GETFIELD from ObjRef " + std::to_string(objRef) + " (" + cls->name + "." + field.name + "), Value = " + std::to_string(value));
             break;
             // Code added by Mokshith - End

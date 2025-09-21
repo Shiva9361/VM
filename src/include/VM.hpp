@@ -89,9 +89,9 @@ private:
     std::vector<int> constantPool;
     std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
-    u_int ip;
-    u_int sp;
-    u_int fp;
+    uint32_t ip;
+    uint32_t sp;
+    uint32_t fp;
 
     ObjectFactory objectFactory; // Added by Mokshith
     std::vector<void *> heap;    // Added by Mokshith
