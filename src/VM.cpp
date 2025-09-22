@@ -381,14 +381,14 @@ void VM::run()
 
         case Opcode::LOAD:
         {
-            uint8_t idx = fetch8();
+            uint32_t idx = fetch32();
             push(locals.at(idx));
             DBG("LOAD " + std::to_string((int)idx) + ", Value = " + std::to_string(locals.at(idx)) + ", Stack top = " + std::to_string(stack.back()));
             break;
         }
         case Opcode::STORE:
         {
-            uint8_t idx = fetch8();
+            uint32_t idx = fetch32();
             locals.at(idx) = pop();
             DBG("STORE " + std::to_string((int)idx) + ", Value = " + std::to_string(locals.at(idx)));
             break;
