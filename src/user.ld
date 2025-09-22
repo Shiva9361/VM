@@ -5,16 +5,20 @@ ENTRY(_start)
 MEMORY
 {
     /* User space: 8MB starting at 8MB offset (matching your OS layout) */
-    RAM (rw) : ORIGIN = 0x20800000, LENGTH = 0x800000  /* 8 MB user RAM */
+    RAM (rw) : ORIGIN = 0x20400000, LENGTH = 0xC00000  /* 12 MB user RAM */
 }
 
 /* Kernel symbols expected by syscalls.c */
-PROVIDE(_kernel_end = 0x20000000 + 0x800000);  /* 8 MB kernel */
+PROVIDE(_kernel_end = 0x20000000 + 0x400000);  /* 4 MB kernel */
 PROVIDE(_estack     = 0x20000000 + 0x1000000); /* top of total RAM */
 
 SECTIONS
 {
     /* === Text + RO Data === */
+    .vectors ORIGIN(RAM) :
+    {
+        KEEP(*(.isr_vector))    /* Interrupt Vector Table: initial SP and Reset handler */
+    } > RAM
     .text :
     {
         _text_start = .;
