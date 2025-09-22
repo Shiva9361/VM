@@ -492,27 +492,93 @@ void VM::run()
             break;
         }
 
+        case Opcode::ICMP_GEQ:
+        {
+            int b = pop(), a = pop();
+            push(a >= b ? 1 : 0);
+            DBG("ICMP_GT, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::ICMP_NEQ:
+        {
+            int b = pop(), a = pop();
+            push(a != b ? 1 : 0);
+            DBG("ICMP_NEQ, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::ICMP_LEQ:
+        {
+            int b = pop(), a = pop();
+            push(a <= b ? 1 : 0);
+            DBG("ICMP_LEQ, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
         case Opcode::FCMP_EQ:
         {
-            float b = pop(), a = pop();
-            push(a == b ? 1 : 0);
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af == bf ? 1 : 0);
             DBG("FCMP_EQ, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FCMP_LT:
         {
-            float b = pop(), a = pop();
-            push(a < b ? 1 : 0);
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af < bf ? 1 : 0);
             DBG("FCMP_LT, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
         case Opcode::FCMP_GT:
         {
-            float b = pop(), a = pop();
-            push(a > b ? 1 : 0);
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af > bf ? 1 : 0);
             DBG("FCMP_GT, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::FCMP_GEQ:
+        {
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af >= bf ? 1 : 0);
+            DBG("FCMP_GEQ, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::FCMP_NEQ:
+        {
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af != bf ? 1 : 0);
+            DBG("FCMP_NEQ, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::FCMP_LEQ:
+        {
+            uint32_t b = pop(), a = pop();
+            float bf, af;
+            std::memcpy(&bf, &b, sizeof(float));
+            std::memcpy(&af, &a, sizeof(float));
+            push(af <= bf ? 1 : 0);
+            DBG("FCMP_LEQ, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
