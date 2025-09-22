@@ -1,4 +1,4 @@
-# Stack-Based Virtual Machine: ISA 
+# Stack-Based Virtual Machine: ISA
 
 ## 1. Overview of the Stack-Based VM Architecture
 
@@ -43,10 +43,10 @@ These instructions pop operands from the stack, perform a calculation, and push 
 
 These instructions facilitate data transfer between the operand stack and the local variable store.
 
-| Opcode | Mnemonic      | Description                                           | Stack Transition    |
-| :----- | :------------ | :---------------------------------------------------- | :------------------ |
-| `0x20` | `LOAD <idx>`  | Load a local variable at index `idx` onto the stack.  | `...` -> `..., val` |
-| `0x21` | `STORE <idx>` | Store the top of the stack into local variable `idx`. | `..., val` -> `...` |
+| Opcode | Mnemonic      | Description                                                   | Stack Transition    |
+| :----- | :------------ | :------------------------------------------------------------ | :------------------ |
+| `0x20` | `LOAD <idx>`  | Load a local variable at index `idx` onto the stack.          | `...` -> `..., val` |
+| `0x21` | `STORE <idx>` | Pop the top of the stack and store into local variable `idx`. | `..., val` -> `...` |
 
 #### 2.4. Control Flow Operations
 
