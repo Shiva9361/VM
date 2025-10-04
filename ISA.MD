@@ -93,3 +93,10 @@ The opcode for syscall is 0x60, followed by a syscall number that specifies the 
 | 0x01    | OPEN     | Open a file.                                              | `..., filename, mode` -> `..., file_handle`                |
 | 0x02    | READ     | Read from a file. Put a pointer to the buffer at localidx | `..., localidx, size, file_handle` -> `..., bytes_read`    |
 | 0x07    | WRITE    | Write to a file. Use the data from buffer at localidx     | `..., localidx, size, file_handle` -> `..., bytes_written` |
+
+#### 2.8. Array Operations
+
+These instructions manage array creation and element access.
+| Opcode | Mnemonic | Description | Stack Transition |
+| :----- | :-------------- | :-------------------------------------- | :----------------------------------- |
+| `0x70` | `NEWARRAY <type>` | Create a new array of a specified type and store ref at localidx | `..., localidx, size` -> `...` |

@@ -733,7 +733,8 @@ void VM::run()
                 throw std::runtime_error("Unsupported array type");
             }
 
-            void *arrayData = malloc(size * multiplier + multiplier);
+            void *rawarrayData = malloc(size * multiplier + multiplier + sizeof(void *));              // Allocate memory with header ;)
+            void *arrayData = static_cast<void *>(static_cast<char *>(rawarrayData) + sizeof(void *)); // Pointer to actual array data
 
             heap.push_back(arrayData);
             locals.at(localidx) = heap.size() - 1; // Store array reference in locals
