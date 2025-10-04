@@ -19,6 +19,11 @@ VM::VM(const std::vector<uint8_t> &filedata)
 
     objectFactory.buildAllVTables();
 
+    fileData.resize(10, nullptr); // Support up to 10 open files
+    fileData[0] = stdin;
+    fileData[1] = stdout;
+    fileData[2] = stderr;
+
     stack.reserve(STACK_SIZE);
     locals.resize(LOCALS_SIZE, 0);
 }
@@ -697,6 +702,55 @@ void VM::run()
 
             break;
             // Code added by Mokshith - End
+        }
+        case Opcode::SYS_CALL:
+        {
+            Syscall syscall = static_cast<Syscall>(fetch8());
+            switch (syscall)
+            {
+            case Syscall::READ:
+            {
+                int fd = pop();              // Stack: file descriptor
+                int size = pop();            // Stack: buffer size
+                int localsIdx = pop();       // Stack: local index to store buffer address
+                void *buffer = malloc(size); // Allocate buffer
+                read_data.push_back(buffer);
+                locals.at(localsIdx) = read_data.size() - 1; // Store buffer index in locals
+                if (fileData.at(fd) == nullptr)
+                {
+                    throw std::runtime_error("SYS_READ error: Invalid file descriptor " + std::to_string(fd));
+                }
+                int bytesRead = fread(buffer, 1, size, fileData.at(fd));
+                push(bytesRead);            // Push number of bytes read onto stack
+                push(read_data.size() - 1); // location of the buffer
+                DBG("SYS_READ from FD " + std::to_string(fd) + ", Requested Size = " + std::to_string(size) + ", Bytes Read = " + std::to_string(bytesRead));
+                break;
+            }
+            case Syscall::WRITE:
+            {
+                int fd = pop();                 // Stack: file descriptor
+                int size = pop();               // Stack: buffer size
+                int locIdx = pop();             // Stack: buffer index
+                int bufIdx = locals.at(locIdx); // Get buffer index from locals
+
+                if (bufIdx < 0 || static_cast<size_t>(bufIdx) >= read_data.size())
+                {
+                    throw std::runtime_error("SYS_WRITE error: Invalid buffer index " + std::to_string(bufIdx));
+                }
+                void *buffer = read_data.at(bufIdx);
+                if (fileData.at(fd) == nullptr)
+                {
+                    throw std::runtime_error("SYS_WRITE error: Invalid file descriptor " + std::to_string(fd));
+                }
+                int bytesWritten = fwrite(buffer, 1, size, fileData.at(fd));
+                push(bytesWritten); // Push number of bytes written onto stack
+                DBG("SYS_WRITE to FD " + std::to_string(fd) + ", Requested Size = " + std::to_string(size) + ", Bytes Written = " + std::to_string(bytesWritten));
+                break;
+            }
+            default:
+                throw std::runtime_error("Unsupported syscall: " + std::to_string((int)syscall));
+            }
+            break;
         }
 
         default:

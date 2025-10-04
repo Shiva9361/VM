@@ -63,7 +63,30 @@ enum class Opcode : uint8_t
     GETFIELD = 0x51,
     PUTFIELD = 0x52,
     INVOKEVIRTUAL = 0x53,
-    INVOKESPECIAL = 0x54
+    INVOKESPECIAL = 0x54,
+    SYS_CALL = 0x60,
+};
+
+enum class Syscall : uint8_t
+{
+    OPEN = 0x01,
+    READ = 0x02,
+    SBRK = 0x03,
+    CLOSE = 0x04,
+    FSTAT = 0x05,
+    LSEEK = 0x06,
+    WRITE = 0x07,
+    GETPID = 0x09,
+    EXIT = 0x0A,
+    TIME = 0x0B,
+    STAT = 0x0C,
+    SYSTEM = 0x0D,
+    GETCWD = 0x0E,
+    CHDIR = 0x0F,
+    RENAME = 0x10,
+    UNLINK = 0x11,
+    MKDIR = 0x12,
+    ISATTY = 0x13,
 };
 
 union Value
@@ -95,6 +118,8 @@ private:
     std::vector<uint32_t> constantPool;
     std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
+    std::vector<FILE *> fileData;
+    std::vector<void *> read_data;
     uint32_t ip;
     uint32_t sp;
     uint32_t fp;
