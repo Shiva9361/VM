@@ -65,6 +65,7 @@ enum class Opcode : uint8_t
     INVOKEVIRTUAL = 0x53,
     INVOKESPECIAL = 0x54,
     SYS_CALL = 0x60,
+    NEWARRAY = 0x70,
 };
 
 enum class Syscall : uint8_t
@@ -119,7 +120,7 @@ private:
     std::vector<ClassInfo> classes;
     std::vector<uint8_t> code;
     std::vector<FILE *> fileData;
-    std::vector<void *> read_data;
+    // std::vector<void *> read_data;
     uint32_t ip;
     uint32_t sp;
     uint32_t fp;

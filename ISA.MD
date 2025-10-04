@@ -81,3 +81,15 @@ These instructions provide the foundation for object-oriented programming, manag
 | 0x52   | `PUTFIELD <field_ref>`     | Set a field in an object.               | `..., obj_ref, value -> ...`                  |
 | 0x53   | `INVOKEVIRTUAL <meth_ref>` | Invoke an instance (virtual) method.    | `..., obj_ref, [arg1, ...] -> ..., [ret_val]` |
 | 0x54   | `INVOKESPECIAL <meth_ref>` | Invoke a constructor or private method. | `..., obj_ref, [arg1, ...] -> ...`            |
+
+#### 2.7. Syscall Operations
+
+These instructions facilitate interaction with the host environment, allowing the VM to perform I/O operations and other system-level tasks.
+
+The opcode for syscall is 0x60, followed by a syscall number that specifies the operation to be performed.
+
+| Syscall | Mnemonic | Description                                               | Stack Transition                                           |
+| :------ | :------- | :-------------------------------------------------------- | :--------------------------------------------------------- |
+| 0x01    | OPEN     | Open a file.                                              | `..., filename, mode` -> `..., file_handle`                |
+| 0x02    | READ     | Read from a file. Put a pointer to the buffer at localidx | `..., localidx, size, file_handle` -> `..., bytes_read`    |
+| 0x07    | WRITE    | Write to a file. Use the data from buffer at localidx     | `..., localidx, size, file_handle` -> `..., bytes_written` |
