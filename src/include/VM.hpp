@@ -34,6 +34,7 @@ enum class Opcode : uint8_t
     FMUL = 0x08,
     FDIV = 0x09,
     FNEG = 0x0A,
+    IMOD = 0x0B,
     PUSH = 0x10,
     POP = 0x11,
     DUP = 0x12,
@@ -66,6 +67,8 @@ enum class Opcode : uint8_t
     INVOKESPECIAL = 0x54,
     SYS_CALL = 0x60,
     NEWARRAY = 0x70,
+    ALOAD = 0x71,
+    ASTORE = 0x72,
 };
 
 enum class Syscall : uint8_t

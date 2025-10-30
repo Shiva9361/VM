@@ -100,3 +100,5 @@ These instructions manage array creation and element access.
 | Opcode | Mnemonic | Description | Stack Transition |
 | :----- | :-------------- | :-------------------------------------- | :----------------------------------- |
 | `0x70` | `NEWARRAY <type>` | Create a new array of a specified type and store ref at localidx | `..., localidx, size` -> `...` |
+| `0x71` | `ALOAD ` | Load an array element onto the stack | `..., array_ref, index` -> `..., value` |
+| `0x72` | `ASTORE ` | Store a value into an array element | `..., array_ref, index, value` -> `...` |

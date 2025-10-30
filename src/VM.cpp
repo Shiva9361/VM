@@ -28,7 +28,6 @@ VM::VM(const std::vector<uint8_t> &filedata)
     locals.resize(LOCALS_SIZE, 0);
 }
 
-/* Code Added By Mokshith - Start*/
 VM::~VM()
 {
     for (void *obj_data : heap)
@@ -36,7 +35,6 @@ VM::~VM()
         objectFactory.destroyObject(obj_data);
     }
 }
-/* Code Added By Mokshith - End*/
 
 void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
 {
@@ -278,6 +276,16 @@ void VM::run()
             int a = pop();
             push(-a);
             DBG("INEG, Stack top = " + std::to_string(stack.back()));
+            break;
+        }
+
+        case Opcode::IMOD:
+        {
+            int b = pop(), a = pop();
+            if (b == 0)
+                throw std::runtime_error("Modulo by zero");
+            push(a % b);
+            DBG("IMOD, Stack top = " + std::to_string(stack.back()));
             break;
         }
 
@@ -589,10 +597,7 @@ void VM::run()
 
         case Opcode::NEW:
         {
-            // uint8_t classRef = fetch8();
-            // break;
 
-            // Code added by Mokshith - start
             uint8_t classIndex = fetch8();
             if (classIndex >= classes.size())
             {
@@ -605,16 +610,10 @@ void VM::run()
             push(objRef);
             DBG("NEW " << cls.name << ", ObjRef: " << objRef);
             break;
-            // Code added by Mokshith - end
         }
         case Opcode::GETFIELD:
         {
-            // uint8_t fieldRef = fetch8();
-            // int obj = pop();
-            // push(obj + fieldRef); // TODO: dummy behavior
-            // break;
 
-            // Code added by Mokshith - start
             uint8_t fieldIndex = fetch8();
             int32_t objRef = pop();
             if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
@@ -638,19 +637,10 @@ void VM::run()
             push(value);
             DBG("GETFIELD from ObjRef " + std::to_string(objRef) + " (" + cls->name + "." + field.name + "), Value = " + std::to_string(value));
             break;
-            // Code added by Mokshith - End
         }
         case Opcode::PUTFIELD:
         {
-            // uint8_t fieldRef = fetch8();
-            // int val = pop();
-            // int obj = pop();
-            // (void)fieldRef;
-            // (void)val;
-            // (void)obj; // TODO: stub
-            // break;
 
-            // Code added by Mokshith - Start
             uint8_t fieldIndex = fetch8();
             int32_t value = pop();
             int32_t objRef = pop();
@@ -671,7 +661,6 @@ void VM::run()
             *reinterpret_cast<int32_t *>(baseAddress + offset) = value;
             DBG("PUTFIELD on ObjRef " + std::to_string(objRef) + " (" + cls->name + "." + field.name + "), Value = " + std::to_string(value));
             break;
-            // Code added by Mokshith - End
         }
         case Opcode::INVOKEVIRTUAL:
         {
@@ -695,13 +684,8 @@ void VM::run()
         }
         case Opcode::INVOKESPECIAL:
         {
-            // (void)fetch8(); // TODO create
-            // break;
-
-            // Code added by Mokshith - Start
 
             break;
-            // Code added by Mokshith - End
         }
 
         case Opcode::NEWARRAY:
@@ -728,6 +712,11 @@ void VM::run()
                 multiplier = sizeof(void *);
                 break;
             }
+            case FieldType::CHAR:
+            {
+                multiplier = sizeof(char);
+                break;
+            }
 
             default:
                 throw std::runtime_error("Unsupported array type");
@@ -739,6 +728,36 @@ void VM::run()
             heap.push_back(arrayData);
             locals.at(localidx) = heap.size() - 1; // Store array reference in locals
 
+            break;
+        }
+
+        case Opcode::ALOAD:
+        {
+            int index = pop();  // array index
+            int arrIdx = pop(); // local index where array reference is stored
+            int arrayRef = locals.at(arrIdx);
+            if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
+            {
+                throw std::runtime_error("ALOAD error: Invalid array reference.");
+            }
+            void *arrayData = heap.at(arrayRef);
+            int value = *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int));
+            push(value);
+            break;
+        }
+
+        case Opcode::ASTORE:
+        {
+            int value = pop();  // value to store
+            int index = pop();  // index in the array
+            int arrIdx = pop(); // local index where array reference is stored
+            int arrayRef = locals.at(arrIdx);
+            if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
+            {
+                throw std::runtime_error("ASTORE error: Invalid array reference.");
+            }
+            void *arrayData = heap.at(arrayRef);
+            *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int)) = value;
             break;
         }
 

@@ -14,7 +14,7 @@ enum class FieldType : uint8_t
     INT = 1,
     OBJECT = 2,
     FLOAT = 3,
-    // TODO: add more types :)
+    CHAR = 4,
 };
 
 struct FieldInfo
