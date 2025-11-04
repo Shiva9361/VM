@@ -741,6 +741,8 @@ void VM::run()
             heap.push_back(arrayData);
             locals.at(localidx) = heap.size() - 1; // Store array reference in locals
 
+            DBG("NEWARRAY of type " + std::to_string(static_cast<int>(type)) + ", size " + std::to_string(size) + ", stored at locals[" + std::to_string(localidx) + "] with reference " + std::to_string(heap.size() - 1));
+
             break;
         }
 
@@ -754,8 +756,35 @@ void VM::run()
                 throw std::runtime_error("ALOAD error: Invalid array reference.");
             }
             void *arrayData = heap.at(arrayRef);
-            int value = *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int));
-            push(value);
+
+            FieldType arrayType = *reinterpret_cast<FieldType *>(static_cast<char *>(arrayData) - sizeof(void *));
+
+            switch (arrayType)
+            {
+            case FieldType::INT:
+            {
+                int value = *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int));
+                push(value);
+                DBG("ALOAD from array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Stack top = " + std::to_string(stack.back()));
+                break;
+            }
+            case FieldType::FLOAT:
+            {
+                float fvalue = *reinterpret_cast<float *>(static_cast<char *>(arrayData) + index * sizeof(float));
+                uint32_t raw;
+                std::memcpy(&raw, &fvalue, sizeof(uint32_t));
+                push(raw);
+                DBG("ALOAD from array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Stack top = " + std::to_string(fvalue));
+                break;
+            }
+            case FieldType::CHAR:
+            {
+                char cvalue = *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char));
+                push(static_cast<int>(cvalue));
+                break;
+            }
+            }
+
             break;
         }
 
@@ -770,7 +799,36 @@ void VM::run()
                 throw std::runtime_error("ASTORE error: Invalid array reference.");
             }
             void *arrayData = heap.at(arrayRef);
-            *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int)) = value;
+
+            FieldType arrayType = *reinterpret_cast<FieldType *>(static_cast<char *>(arrayData) - sizeof(void *));
+            switch (arrayType)
+            {
+            case FieldType::INT:
+            case FieldType::OBJECT:
+            {
+                *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int)) = value;
+
+                DBG("ASTORE to array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Value = " + std::to_string(value));
+                break;
+            }
+            case FieldType::FLOAT:
+            {
+                float fvalue;
+                std::memcpy(&fvalue, &value, sizeof(float));
+                *reinterpret_cast<float *>(static_cast<char *>(arrayData) + index * sizeof(float)) = fvalue;
+                DBG("ASTORE to array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Value = " + std::to_string(fvalue));
+                break;
+            }
+            case FieldType::CHAR:
+            {
+                *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char)) = static_cast<char>(value);
+                DBG("ASTORE to array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Value = " + std::to_string(static_cast<char>(value)));
+                break;
+            }
+
+            break;
+            }
+
             break;
         }
 
@@ -818,6 +876,62 @@ void VM::run()
                 push(bytesWritten); // Push number of bytes written onto stack
                 DBG("SYS_WRITE to FD " + std::to_string(fd) + ", Requested Size = " + std::to_string(size) + ", Bytes Written = " + std::to_string(bytesWritten));
                 break;
+            }
+            case Syscall::OPEN:
+            {
+                char mode = pop();
+                int32_t filenameIdx = pop();
+                if (filenameIdx < 0 || static_cast<size_t>(filenameIdx) >= heap.size())
+                {
+                    throw std::runtime_error("SYS_OPEN error: Invalid filename index " + std::to_string(filenameIdx));
+                }
+                char *filename = static_cast<char *>(heap.at(filenameIdx));
+                char modeStr[] = {mode, '\0'};
+                int fd = -1;
+
+                for (size_t i = 3; i < fileData.size(); i++)
+                {
+                    if (fileData.at(i) == nullptr)
+                    {
+                        FILE *f = fopen(filename, modeStr);
+                        if (f == nullptr)
+                        {
+                            throw std::runtime_error("SYS_OPEN error: Failed to open file " + std::string(filename));
+                        }
+                        fileData.at(i) = f;
+                        fd = i;
+                        break;
+                    }
+                }
+
+                if (fd == -1)
+                {
+                    throw std::runtime_error("SYS_OPEN error: Too many open files.");
+                }
+
+                push(fd);
+
+                DBG("SYS_OPEN file " + std::string(filename) + " with mode " + mode + ", FD = " + std::to_string(fd));
+
+                break;
+            }
+            case Syscall::CLOSE:
+            {
+                int fd = pop();
+                if (fd < 0 || static_cast<size_t>(fd) >= fileData.size() || fileData.at(fd) == nullptr)
+                {
+                    throw std::runtime_error("SYS_CLOSE error: Invalid file descriptor " + std::to_string(fd));
+                }
+                fclose(fileData.at(fd));
+                fileData.at(fd) = nullptr;
+                DBG("SYS_CLOSE on FD " + std::to_string(fd));
+                break;
+            }
+            case Syscall::EXIT:
+            {
+                int exitCode = pop();
+                DBG("SYS_EXIT with code " + std::to_string(exitCode) + ", halting execution.");
+                exit(exitCode);
             }
             default:
                 throw std::runtime_error("Unsupported syscall: " + std::to_string((int)syscall));
