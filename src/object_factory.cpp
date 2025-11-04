@@ -30,6 +30,10 @@ void ObjectFactory::computeLayout(ClassInfo &cls)
             break;
         case FieldType::FLOAT:
             offset += sizeof(float);
+            break;
+        case FieldType::CHAR:
+            offset += sizeof(char);
+            break;
         // TODO: add more types
         default:
             throw std::runtime_error("Unknown field type in computeLayout");

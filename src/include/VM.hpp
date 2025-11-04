@@ -128,6 +128,8 @@ private:
     uint32_t sp;
     uint32_t fp;
 
+    uint16_t args_to_pop;
+
     ObjectFactory objectFactory; // Added by Mokshith
     std::vector<void *> heap;    // Added by Mokshith
 

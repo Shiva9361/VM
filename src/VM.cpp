@@ -228,6 +228,7 @@ void VM::loadFromBinary(const std::vector<uint8_t> &filedata)
         throw std::runtime_error("Entry point out of code segment bounds");
     }
     ip = entryPoint;
+    DBG("Entry point set to " + std::to_string(ip));
 
     stack.clear();
 }
@@ -464,6 +465,13 @@ void VM::run()
 
             fp = old_fp;
             ip = return_ip;
+
+            for (uint8_t i = 0; i < args_to_pop; i++)
+            {
+                pop();
+            }
+            args_to_pop = 0;
+
             push(returnValue);
 
             DBG("RET to ip " << ip << ", restored FP = " << fp);
@@ -472,6 +480,9 @@ void VM::run()
         case Opcode::CALL:
         {
             uint32_t methodOffset = fetch32();
+            uint8_t argCount = fetch8();
+
+            args_to_pop = argCount;
 
             push(static_cast<int>(ip));
             push(static_cast<int>(fp));
@@ -664,7 +675,8 @@ void VM::run()
         }
         case Opcode::INVOKEVIRTUAL:
         {
-            uint32_t methodOffset = fetch8();
+            uint32_t methodOffset = fetch32();
+            args_to_pop = fetch8();
             int32_t objRef = pop();
 
             if (objRef < 0 || static_cast<size_t>(objRef) >= heap.size())
@@ -723,6 +735,7 @@ void VM::run()
             }
 
             void *rawarrayData = malloc(size * multiplier + multiplier + sizeof(void *));              // Allocate memory with header ;)
+            *static_cast<FieldType *>(rawarrayData) = type;                                            // Store array type at the start
             void *arrayData = static_cast<void *>(static_cast<char *>(rawarrayData) + sizeof(void *)); // Pointer to actual array data
 
             heap.push_back(arrayData);

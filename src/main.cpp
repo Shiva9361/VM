@@ -39,16 +39,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    try
-    {
-        VM vm(filedata);
-        vm.run();
-    }
-    catch (const std::exception &ex)
-    {
-        std::cerr << "VM error: " << ex.what() << std::endl;
-        return 1;
-    }
+    // try
+    // {
+    VM vm(filedata);
+    vm.run();
+    // }
+    // catch (const std::exception &ex)
+    // {
+    // std::cerr << "VM error: " << ex.what() << std::endl;
+    // return 1;
+    // }
 
     return 0;
 }
