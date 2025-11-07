@@ -703,8 +703,8 @@ void VM::run()
         case Opcode::NEWARRAY:
         {
             FieldType type = static_cast<FieldType>(fetch8());
-            int size = pop();     // size of the array
-            int localidx = pop(); // local index to store array reference
+            int size = pop(); // size of the array
+            // int localidx = pop(); // local index to store array reference
 
             int multiplier = 1;
             switch (type)
@@ -739,7 +739,8 @@ void VM::run()
             void *arrayData = static_cast<void *>(static_cast<char *>(rawarrayData) + sizeof(void *)); // Pointer to actual array data
 
             heap.push_back(arrayData);
-            locals.at(localidx) = heap.size() - 1; // Store array reference in locals
+            // locals.at(localidx) = heap.size() - 1; // Store array reference in locals
+            push(heap.size() - 1);
 
             DBG("NEWARRAY of type " + std::to_string(static_cast<int>(type)) + ", size " + std::to_string(size) + ", stored at locals[" + std::to_string(localidx) + "] with reference " + std::to_string(heap.size() - 1));
 
@@ -783,6 +784,11 @@ void VM::run()
                 push(static_cast<int>(cvalue));
                 break;
             }
+            case FieldType::OBJECT:
+            {
+                char obj = *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char));
+                // push();
+            }
             }
 
             break;
@@ -803,8 +809,14 @@ void VM::run()
             FieldType arrayType = *reinterpret_cast<FieldType *>(static_cast<char *>(arrayData) - sizeof(void *));
             switch (arrayType)
             {
-            case FieldType::INT:
             case FieldType::OBJECT:
+            {
+                *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(void *)) = value;
+
+                DBG("ASTORE to array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Value = <OBJECT>");
+                break;
+            }
+            case FieldType::INT:
             {
                 *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int)) = value;
 
