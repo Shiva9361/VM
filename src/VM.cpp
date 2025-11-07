@@ -742,7 +742,7 @@ void VM::run()
             // locals.at(localidx) = heap.size() - 1; // Store array reference in locals
             push(heap.size() - 1);
 
-            DBG("NEWARRAY of type " + std::to_string(static_cast<int>(type)) + ", size " + std::to_string(size) + ", stored at locals[" + std::to_string(localidx) + "] with reference " + std::to_string(heap.size() - 1));
+            DBG("NEWARRAY of type " + std::to_string(static_cast<int>(type)) + ", size " + std::to_string(size) + ", stored with reference " + std::to_string(heap.size() - 1));
 
             break;
         }
@@ -750,7 +750,7 @@ void VM::run()
         case Opcode::ALOAD:
         {
             int index = pop();  // array index
-            int arrIdx = pop(); // local index where array reference is stored
+            int arrayRef = pop(); // local index where array reference is stored
             // int arrayRef = locals.at(arrIdx);
             if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
             {
