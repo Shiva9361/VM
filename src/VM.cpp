@@ -751,7 +751,7 @@ void VM::run()
         {
             int index = pop();  // array index
             int arrIdx = pop(); // local index where array reference is stored
-            int arrayRef = locals.at(arrIdx);
+            // int arrayRef = locals.at(arrIdx);
             if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
             {
                 throw std::runtime_error("ALOAD error: Invalid array reference.");
@@ -794,8 +794,8 @@ void VM::run()
         {
             int value = pop();  // value to store
             int index = pop();  // index in the array
-            int arrIdx = pop(); // local index where array reference is stored
-            int arrayRef = locals.at(arrIdx);
+            int arrayRef = pop(); // heap index of array
+            // int arrayRef = locals.at(arrIdx);
             if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
             {
                 throw std::runtime_error("ASTORE error: Invalid array reference.");
