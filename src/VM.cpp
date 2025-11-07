@@ -763,6 +763,7 @@ void VM::run()
             switch (arrayType)
             {
             case FieldType::INT:
+            case FieldType::OBJECT:
             {
                 int value = *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int));
                 push(value);
@@ -783,11 +784,6 @@ void VM::run()
                 char cvalue = *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char));
                 push(static_cast<int>(cvalue));
                 break;
-            }
-            case FieldType::OBJECT:
-            {
-                char obj = *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char));
-                // push();
             }
             }
 
@@ -810,12 +806,6 @@ void VM::run()
             switch (arrayType)
             {
             case FieldType::OBJECT:
-            {
-                *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(void *)) = value;
-
-                DBG("ASTORE to array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Value = <OBJECT>");
-                break;
-            }
             case FieldType::INT:
             {
                 *reinterpret_cast<int *>(static_cast<char *>(arrayData) + index * sizeof(int)) = value;
