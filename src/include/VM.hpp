@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <cstdio> 
 
 #ifdef VM_DEBUG
 #define VM_CPP_DEBUG // Enable debug output in VM.cpp
