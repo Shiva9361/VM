@@ -1,10 +1,10 @@
 #!/bin/bash
-rm -rf build
-mkdir build
-cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCROSS_COMPILE=ON
-cd build
+rm -rf build_m0
+mkdir build_m0
+cmake -B build_m0 -DCMAKE_BUILD_TYPE=Debug -DCROSS_COMPILE=ON
+cd build_m0
 make
 cd ..
-cp build/vm vm
-chmod +x vm
-echo "VM built successfully."
+cp build_m0/vm vm_m0
+chmod +x vm_m0
+echo "VM for Cortex-M0 built successfully."
