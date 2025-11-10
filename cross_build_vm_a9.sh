@@ -1,4 +1,5 @@
 #!/bin/bash
+cd "$(dirname "$0")"
 rm -rf build_a9
 mkdir build_a9
 cmake -B build_a9 -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE=arm-cortex-a9-toolchain.cmake
