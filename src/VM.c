@@ -283,7 +283,7 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                 string_append_char(&temp_name, *(char *)vector_get_ptr(filedata_vec, classOffset + j));
             }
             string_copy(&cls.name, &temp_name);
-            string_destroy(&temp_name);
+            // string_destroy(&temp_name);
             classOffset += classNameLen;
 
             cls.superClassIndex = (int32_t)read_uint32_from_vector(filedata_vec, &classOffset);
@@ -314,7 +314,7 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                     string_append_char(&temp_field_name, *(char *)vector_get_ptr(filedata_vec, classOffset + j));
                 }
                 string_copy(&field.name, &temp_field_name);
-                string_destroy(&temp_field_name);
+                // string_destroy(&temp_field_name);
                 classOffset += fieldNameLen;
 
                 field.type = (FieldType_t)read_uint8_from_vector(filedata_vec, &classOffset);
@@ -326,7 +326,7 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                 DBG(" Type: ");
                 DBG_INT(field.type);
                 DBG_NL();
-                string_destroy(&field.name);
+                // string_destroy(&field.name);
             }
 
             uint32_t methodCount = read_uint32_from_vector(filedata_vec, &classOffset);
@@ -350,7 +350,7 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                     string_append_char(&temp_method_name, *(char *)vector_get_ptr(filedata_vec, classOffset + j));
                 }
                 string_copy(&method.name, &temp_method_name);
-                string_destroy(&temp_method_name);
+                // string_destroy(&temp_method_name);
                 classOffset += methodNameLen;
 
                 method.bytecodeOffset = read_uint32_from_vector(filedata_vec, &classOffset);
@@ -363,7 +363,7 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                 DBG(" Bytecode Offset: ");
                 DBG_UINT32(method.bytecodeOffset);
                 DBG_NL();
-                string_destroy(&method.name);
+                // string_destroy(&method.name);
             }
 
             vector_push_back(&vm->classes, &cls);

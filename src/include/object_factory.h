@@ -32,7 +32,7 @@ typedef struct MethodInfo_t
 } MethodInfo_t;
 
 // Function pointer for virtual table entries
-typedef void (*MethodPtr)(void*);
+typedef void (*MethodPtr)(void *);
 
 struct ClassInfo_t
 {
@@ -54,17 +54,17 @@ typedef struct ObjectFactory_t
 } ObjectFactory_t;
 
 // ObjectFactory_t function declarations
-void object_factory_init(ObjectFactory_t* factory);
-void object_factory_destroy(ObjectFactory_t* factory);
-bool object_factory_register_class(ObjectFactory_t* factory, const ClassInfo_t* cls);
-Object_t* object_factory_create_object(ObjectFactory_t* factory, const string_t* className);
-void object_factory_destroy_object(ObjectFactory_t* factory, Object_t* object);
-const ClassInfo_t* object_factory_get_class_info(const ObjectFactory_t* factory, const string_t* className);
-void object_factory_build_vtable(ObjectFactory_t* factory, int classIndex);
-void object_factory_build_all_vtables(ObjectFactory_t* factory);
+void object_factory_init(ObjectFactory_t *factory);
+void object_factory_destroy(ObjectFactory_t *factory);
+bool object_factory_register_class(ObjectFactory_t *factory, const ClassInfo_t *cls);
+Object_t *object_factory_create_object(ObjectFactory_t *factory, const string_t *className);
+void object_factory_destroy_object(ObjectFactory_t *factory, Object_t *object);
+const ClassInfo_t *object_factory_get_class_info(const ObjectFactory_t *factory, const string_t *className);
+void object_factory_build_vtable(ObjectFactory_t *factory, const string_t classIndex);
+void object_factory_build_all_vtables(ObjectFactory_t *factory);
 
 // Helper functions for ClassInfo_t
-void class_info_init(ClassInfo_t* class_info);
-void class_info_destroy(ClassInfo_t* class_info);
+void class_info_init(ClassInfo_t *class_info);
+void class_info_destroy(ClassInfo_t *class_info);
 
 #endif // VM_OBJECT_FACTORY_H

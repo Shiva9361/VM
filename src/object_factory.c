@@ -76,7 +76,7 @@ bool object_factory_register_class(ObjectFactory_t *factory, const ClassInfo_t *
         string_init_from_cstr(&copy_field.name, string_cstr(&original_field->name));
         copy_field.type = original_field->type;
         vector_push_back(&copy_cls.fields, &copy_field);
-        // string_destroy(&copy_field.name); // Destroy temporary string
+        // // string_destroy(&copy_field.name); // Destroy temporary string
     }
 
     // Copy methods
@@ -88,7 +88,7 @@ bool object_factory_register_class(ObjectFactory_t *factory, const ClassInfo_t *
         copy_method.bytecodeOffset = original_method->bytecodeOffset;
         copy_method.isVirtual = original_method->isVirtual;
         vector_push_back(&copy_cls.methods, &copy_method);
-        // string_destroy(&copy_method.name); // Destroy temporary string
+        // // string_destroy(&copy_method.name); // Destroy temporary string
     }
 
     object_factory_compute_layout(&copy_cls);
@@ -113,11 +113,11 @@ bool object_factory_register_class(ObjectFactory_t *factory, const ClassInfo_t *
     string_init_from_cstr(&class_name_copy, string_cstr(&cls->name));
     if (!hash_map_put(&factory->class_offset_to_name, &current_class_index, &class_name_copy))
     { // Key is int, value is string_t
-        string_destroy(&class_name_copy);
+        // string_destroy(&class_name_copy);
         return false;
     }
-    string_destroy(&class_name_copy); // Clean up temporary string
-    class_info_destroy(&copy_cls);    // The copy is now owned by the hash map, so destroy the local copy's contents
+    // // string_destroy(&class_name_copy); // Clean up temporary string
+    // class_info_destroy(&copy_cls);    // The copy is now owned by the hash map, so destroy the local copy's contents
     return true;
 }
 
@@ -170,12 +170,12 @@ const ClassInfo_t *object_factory_get_class_info(const ObjectFactory_t *factory,
     return (const ClassInfo_t *)hash_map_get(&factory->classes, className);
 }
 
-void object_factory_build_vtable(ObjectFactory_t *factory, int classIndex)
+void object_factory_build_vtable(ObjectFactory_t *factory, string_t classIndex)
 {
     // This function needs to retrieve ClassInfo_t by index, which is tricky with hash_map_t.
     // The C++ version used class_offset_to_name[classIndex] to get the name, then classes[name].
     // We need to replicate this.
-    string_t *class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, (string_t *)&classIndex);
+    string_t *class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, &classIndex);
     if (!class_name_ptr)
     {
         ERROR_PRINT("Class name not found for index %d\n", classIndex);
@@ -187,21 +187,27 @@ void object_factory_build_vtable(ObjectFactory_t *factory, int classIndex)
     if (!cls)
     {
         ERROR_PRINT("Class info not found for name %s\n", string_cstr(&class_name));
-        string_destroy(&class_name);
+        // string_destroy(&class_name);
         return;
     }
 
     if (cls->superClassIndex >= 0)
     {
         // Recursively build superclass vtable if not already built
-        string_t *super_class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, (string_t *)&cls->superClassIndex);
+        string_t index;
+        char index_str[2] = {cls->superClassIndex + '0', '\0'};
+        string_init_from_cstr(&index, index_str);
+        string_t *super_class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, &index);
         if (super_class_name_ptr)
         {
             string_t super_class_name = *super_class_name_ptr;
             ClassInfo_t *superCls = (ClassInfo_t *)hash_map_get(&factory->classes, &super_class_name);
             if (superCls && vector_size(&superCls->vtable) == 0)
             {
-                object_factory_build_vtable(factory, cls->superClassIndex);
+                string_t super_class_index_str;
+                char index[2] = {cls->superClassIndex + '0', '\0'};
+                string_init_from_cstr(&super_class_index_str, index);
+                object_factory_build_vtable(factory, super_class_index_str);
             }
             // Inherit superclass vtable
             for (size_t i = 0; i < vector_size(&superCls->vtable); ++i)
@@ -209,7 +215,7 @@ void object_factory_build_vtable(ObjectFactory_t *factory, int classIndex)
                 MethodPtr method_ptr = *(MethodPtr *)vector_get_ptr(&superCls->vtable, i);
                 vector_push_back(&cls->vtable, &method_ptr);
             }
-            string_destroy(&super_class_name);
+            // string_destroy(&super_class_name);
         }
     }
 
@@ -244,7 +250,7 @@ void object_factory_build_vtable(ObjectFactory_t *factory, int classIndex)
             vector_push_back(&cls->vtable, &method); // Append MethodInfo_t*
         }
     }
-    string_destroy(&class_name);
+    // // string_destroy(&class_name);
 }
 
 void object_factory_build_all_vtables(ObjectFactory_t *factory)
@@ -259,16 +265,20 @@ void object_factory_build_all_vtables(ObjectFactory_t *factory)
     // This assumes class_offset_to_name is populated with contiguous integer keys.
     for (int i = 0; i < hash_map_size(&factory->classes); ++i)
     {
-        string_t *class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, (string_t *)&i);
+
+        string_t current_class_index;
+        char index[2] = {i + '0', '\0'};
+        string_init_from_cstr(&current_class_index, index);
+        string_t *class_name_ptr = (string_t *)hash_map_get(&factory->class_offset_to_name, &current_class_index);
         if (class_name_ptr)
         {
             string_t class_name = *class_name_ptr;
             ClassInfo_t *cls = (ClassInfo_t *)hash_map_get(&factory->classes, &class_name);
             if (cls && vector_size(&cls->vtable) == 0)
             {
-                object_factory_build_vtable(factory, i);
+                object_factory_build_vtable(factory, current_class_index);
             }
-            string_destroy(&class_name);
+            // // // string_destroy(&class_name);
         }
     }
 }
@@ -287,20 +297,20 @@ void class_info_init(ClassInfo_t *class_info)
 
 void class_info_destroy(ClassInfo_t *class_info)
 {
-    string_destroy(&class_info->name);
+    // // string_destroy(&class_info->name);
 
     // Destroy contents of vectors
     for (size_t i = 0; i < vector_size(&class_info->fields); ++i)
     {
         FieldInfo_t *field = (FieldInfo_t *)vector_get_ptr(&class_info->fields, i);
-        string_destroy(&field->name);
+        // // string_destroy(&field->name);
     }
     vector_destroy(&class_info->fields);
 
     for (size_t i = 0; i < vector_size(&class_info->methods); ++i)
     {
         MethodInfo_t *method = (MethodInfo_t *)vector_get_ptr(&class_info->methods, i);
-        string_destroy(&method->name);
+        // // string_destroy(&method->name);
     }
     vector_destroy(&class_info->methods);
 
