@@ -1,0 +1,1400 @@
+src/hash_map.c: In function 'hash_map_put_internal':
+src/hash_map.c:66:13: warning: implicit declaration of function 'memcpy' [-Wimplicit-function-declaration]
+   66 |             memcpy(entry->value, value, map->value_size);
+      |             ^~~~~~
+src/hash_map.c:66:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+src/hash_map.c:5:1: note: include '<string.h>' or provide a declaration of 'memcpy'
+    4 | #include <stdio.h>  // For fprintf, stderr
+  +++ |+#include <string.h>
+    5 | 
+src/hash_map.c:90:5: warning: incompatible implicit declaration of built-in function 'memcpy'
+   90 |     memcpy(new_entry->value, value, map->value_size);
+      |     ^~~~~~
+src/hash_map.c:90:5: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/main.c: In function 'main':
+src/main.c:9:14: warning: unused parameter 'argc' [-Wunused-parameter]
+    9 | int main(int argc, char *argv[])
+      |          ~~~~^~~~
+src/main.c:9:26: warning: unused parameter 'argv' [-Wunused-parameter]
+    9 | int main(int argc, char *argv[])
+      |                    ~~~~~~^~~~~~
+src/object_factory.c: In function 'object_factory_create_object':
+src/object_factory.c:131:5: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
+  131 |     memset(objectData, 0, cls->objectSize);
+      |     ^~~~~~
+src/object_factory.c:131:5: warning: incompatible implicit declaration of built-in function 'memset'
+src/object_factory.c:5:1: note: include '<string.h>' or provide a declaration of 'memset'
+    4 | #include <stdio.h>  // For fprintf, stderr
+  +++ |+#include <string.h>
+    5 | 
+src/object_factory.c: In function 'object_factory_destroy_object':
+src/object_factory.c:141:53: warning: unused parameter 'factory' [-Wunused-parameter]
+  141 | void object_factory_destroy_object(ObjectFactory_t* factory, Object_t* object) {
+      |                                    ~~~~~~~~~~~~~~~~~^~~~~~~
+src/object_factory.c: In function 'object_factory_build_all_vtables':
+src/object_factory.c:230:23: warning: comparison of integer expressions of different signedness: 'int' and 'size_t' {aka 'unsigned int'} [-Wsign-compare]
+  230 |     for (int i = 0; i < hash_map_size(&factory->classes); ++i) {
+      |                       ^
+src/string.c: In function 'string_init_from_cstr':
+src/string.c:22:23: warning: implicit declaration of function 'strlen' [-Wimplicit-function-declaration]
+   22 |     size_t cstr_len = strlen(cstr);
+      |                       ^~~~~~
+src/string.c:22:23: warning: incompatible implicit declaration of built-in function 'strlen'
+src/string.c:5:1: note: include '<string.h>' or provide a declaration of 'strlen'
+    4 | #include <stdio.h>  // For fprintf, stderr
+  +++ |+#include <string.h>
+    5 | 
+src/string.c:31:5: warning: implicit declaration of function 'strcpy' [-Wimplicit-function-declaration]
+   31 |     strcpy(str->data, cstr);
+      |     ^~~~~~
+src/string.c:31:5: warning: incompatible implicit declaration of built-in function 'strcpy'
+src/string.c:31:5: note: include '<string.h>' or provide a declaration of 'strcpy'
+src/string.c: In function 'string_append_cstr':
+src/string.c:60:23: warning: incompatible implicit declaration of built-in function 'strlen'
+   60 |     size_t cstr_len = strlen(cstr);
+      |                       ^~~~~~
+src/string.c:60:23: note: include '<string.h>' or provide a declaration of 'strlen'
+src/string.c:67:5: warning: implicit declaration of function 'strcat' [-Wimplicit-function-declaration]
+   67 |     strcat(str->data, cstr);
+      |     ^~~~~~
+src/string.c:67:5: warning: incompatible implicit declaration of built-in function 'strcat'
+src/string.c:67:5: note: include '<string.h>' or provide a declaration of 'strcat'
+src/string.c: In function 'string_compare':
+src/string.c:97:12: warning: implicit declaration of function 'strcmp' [-Wimplicit-function-declaration]
+   97 |     return strcmp(str1->data, str2->data) == 0;
+      |            ^~~~~~
+src/string.c: In function 'string_copy':
+src/string.c:119:5: warning: incompatible implicit declaration of built-in function 'strcpy'
+  119 |     strcpy(dest->data, src->data);
+      |     ^~~~~~
+src/string.c:119:5: note: include '<string.h>' or provide a declaration of 'strcpy'
+src/vector.c: In function 'vector_push_back':
+src/vector.c:50:5: warning: implicit declaration of function 'memcpy' [-Wimplicit-function-declaration]
+   50 |     memcpy((char *)vec->data + vec->size * vec->element_size, value, vec->element_size);
+      |     ^~~~~~
+src/vector.c:50:5: warning: incompatible implicit declaration of built-in function 'memcpy'
+src/vector.c:5:1: note: include '<string.h>' or provide a declaration of 'memcpy'
+    4 | #include <stdio.h>  // For fprintf, stderr
+  +++ |+#include <string.h>
+    5 | 
+src/vector.c: In function 'vector_pop_back':
+src/vector.c:64:9: warning: incompatible implicit declaration of built-in function 'memcpy'
+   64 |         memcpy(out_value, (char *)vec->data + vec->size * vec->element_size, vec->element_size);
+      |         ^~~~~~
+src/vector.c:64:9: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/vector.c: In function 'vector_get':
+src/vector.c:80:9: warning: incompatible implicit declaration of built-in function 'memcpy'
+   80 |         memcpy(temp, (char *)vec->data + index * vec->element_size, vec->element_size);
+      |         ^~~~~~
+src/vector.c:80:9: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/vector.c: In function 'vector_set':
+src/vector.c:102:5: warning: incompatible implicit declaration of built-in function 'memcpy'
+  102 |     memcpy((char *)vec->data + index * vec->element_size, value, vec->element_size);
+      |     ^~~~~~
+src/vector.c:102:5: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/VM.c: In function 'vm_init':
+src/VM.c:71:18: warning: implicit declaration of function 'fdopen_simple' [-Wimplicit-function-declaration]
+   71 |         stdout = fdopen_simple(1);
+      |                  ^~~~~~~~~~~~~
+src/VM.c:71:16: warning: assignment to '__FILE *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+   71 |         stdout = fdopen_simple(1);
+      |                ^
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c: In function 'vm_load_from_binary':
+src/VM.c:145:21: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+  145 |         ERROR_PRINT("Unsupported VM version: %u\n", version);
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~
+      |                                                     |
+      |                                                     uint32_t {aka long unsigned int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:145:47: note: format string is defined here
+  145 |         ERROR_PRINT("Unsupported VM version: %u\n", version);
+      |                                              ~^
+      |                                               |
+      |                                               unsigned int
+      |                                              %lu
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:160:5: note: in expansion of macro 'DBG_UINT32'
+  160 |     DBG_UINT32(version);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:163:5: note: in expansion of macro 'DBG_UINT32'
+  163 |     DBG_UINT32(entryPoint);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:166:5: note: in expansion of macro 'DBG_UINT32'
+  166 |     DBG_UINT32(constPoolOffset);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:168:5: note: in expansion of macro 'DBG_UINT32'
+  168 |     DBG_UINT32(constPoolSize);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:171:5: note: in expansion of macro 'DBG_UINT32'
+  171 |     DBG_UINT32(codeOffset);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:173:5: note: in expansion of macro 'DBG_UINT32'
+  173 |     DBG_UINT32(codeSize);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:176:5: note: in expansion of macro 'DBG_UINT32'
+  176 |     DBG_UINT32(globalsOffset);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:178:5: note: in expansion of macro 'DBG_UINT32'
+  178 |     DBG_UINT32(globalsSize);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:181:5: note: in expansion of macro 'DBG_UINT32'
+  181 |     DBG_UINT32(classMetadataOffset);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:183:5: note: in expansion of macro 'DBG_UINT32'
+  183 |     DBG_UINT32(classMetadataSize);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/VM.c:249:13: warning: passing argument 1 of 'fprintf' from incompatible pointer type [-Wincompatible-pointer-types]
+  249 |     fprintf("\n");
+      |             ^~~~
+      |             |
+      |             char *
+In file included from src/include/VM.h:8,
+                 from src/VM.c:1:
+/media/shiva/1DC8ABD92E3661741/CSD/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdio.h:196:14: note: expected 'FILE * restrict' but argument is of type 'char *'
+  196 | int fprintf (FILE *__restrict, const char *__restrict, ...)
+      |              ^
+src/VM.c:249:5: error: too few arguments to function 'fprintf'
+  249 |     fprintf("\n");
+      |     ^~~~~~~
+In file included from src/include/VM.h:8,
+                 from src/VM.c:1:
+/media/shiva/1DC8ABD92E3661741/CSD/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux/gcc-arm-none-eabi-10.3-2021.10/arm-none-eabi/include/stdio.h:196:5: note: declared here
+  196 | int fprintf (FILE *__restrict, const char *__restrict, ...)
+      |     ^~~~~~~
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:294:13: note: in expansion of macro 'DBG_INT'
+  294 |             DBG_INT(cls.superClassIndex);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:363:17: note: in expansion of macro 'DBG_UINT32'
+  363 |                 DBG_UINT32(method.bytecodeOffset);
+      |                 ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:385:5: note: in expansion of macro 'DBG_UINT32'
+  385 |     DBG_UINT32(vm->ip);
+      |     ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/VM.c: In function 'vm_run':
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:406:13: note: in expansion of macro 'DBG_INT'
+  406 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:417:13: note: in expansion of macro 'DBG_INT'
+  417 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:428:13: note: in expansion of macro 'DBG_INT'
+  428 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:444:13: note: in expansion of macro 'DBG_INT'
+  444 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:454:13: note: in expansion of macro 'DBG_INT'
+  454 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:470:13: note: in expansion of macro 'DBG_INT'
+  470 |             DBG_INT(result);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:479:13: warning: implicit declaration of function 'memcpy' [-Wimplicit-function-declaration]
+  479 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:479:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+src/VM.c:7:1: note: include '<string.h>' or provide a declaration of 'memcpy'
+    6 | #include <fcntl.h>    // For file flags (O_RDONLY, O_WRONLY, etc.)
+  +++ |+#include <string.h>
+    7 | #include <sys/stat.h> // For stat, fstat
+src/VM.c:495:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  495 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:495:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/VM.c:511:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  511 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:511:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/VM.c:527:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  527 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:527:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+src/VM.c:547:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  547 |             memcpy(&af, &a_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:547:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:562:13: note: in expansion of macro 'DBG_INT'
+  562 |             DBG_INT(val);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:564:13: note: in expansion of macro 'DBG_INT'
+  564 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:580:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  580 |             memcpy(&val, &raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:580:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:602:13: note: in expansion of macro 'DBG_UINT32'
+  602 |             DBG_UINT32(vm_peek(vm));
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:611:29: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+  611 |                 ERROR_PRINT("LOAD error: Local index out of bounds: %u\n", idx);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~
+      |                                                                            |
+      |                                                                            uint32_t {aka long unsigned int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:611:70: note: format string is defined here
+  611 |                 ERROR_PRINT("LOAD error: Local index out of bounds: %u\n", idx);
+      |                                                                     ~^
+      |                                                                      |
+      |                                                                      unsigned int
+      |                                                                     %lu
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:617:13: note: in expansion of macro 'DBG_UINT32'
+  617 |             DBG_UINT32(idx);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:619:13: note: in expansion of macro 'DBG_UINT32'
+  619 |             DBG_UINT32(val);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:621:13: note: in expansion of macro 'DBG_UINT32'
+  621 |             DBG_UINT32(vm_peek(vm));
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:630:29: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+  630 |                 ERROR_PRINT("STORE error: Local index out of bounds: %u\n", idx);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~
+      |                                                                             |
+      |                                                                             uint32_t {aka long unsigned int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:630:71: note: format string is defined here
+  630 |                 ERROR_PRINT("STORE error: Local index out of bounds: %u\n", idx);
+      |                                                                      ~^
+      |                                                                       |
+      |                                                                       unsigned int
+      |                                                                      %lu
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:636:13: note: in expansion of macro 'DBG_UINT32'
+  636 |             DBG_UINT32(idx);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:638:13: note: in expansion of macro 'DBG_UINT32'
+  638 |             DBG_UINT32(val);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/VM.c:645:24: warning: comparison of integer expressions of different signedness: 'uint32_t' {aka 'long unsigned int'} and 'int' [-Wsign-compare]
+  645 |             if (vm->fp < 2 + argIdx || vm->fp - 2 - argIdx >= vector_size(&vm->stack))
+      |                        ^
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:655:13: note: in expansion of macro 'DBG_UINT32'
+  655 |             DBG_UINT32(argVal);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:657:13: note: in expansion of macro 'DBG_UINT32'
+  657 |             DBG_UINT32(vm_peek(vm));
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:727:13: note: in expansion of macro 'DBG_UINT32'
+  727 |             DBG_UINT32(vm->ip);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:729:13: note: in expansion of macro 'DBG_UINT32'
+  729 |             DBG_UINT32(vm->fp);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:747:13: note: in expansion of macro 'DBG_UINT32'
+  747 |             DBG_UINT32(methodOffset);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:749:13: note: in expansion of macro 'DBG_UINT32'
+  749 |             DBG_UINT32(*(uint32_t *)vector_get_ptr(&vm->stack, vm->fp - 1));
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:751:13: note: in expansion of macro 'DBG_UINT32'
+  751 |             DBG_UINT32(vm->fp);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:761:13: note: in expansion of macro 'DBG_INT'
+  761 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:771:13: note: in expansion of macro 'DBG_INT'
+  771 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:781:13: note: in expansion of macro 'DBG_INT'
+  781 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:791:13: note: in expansion of macro 'DBG_INT'
+  791 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:801:13: note: in expansion of macro 'DBG_INT'
+  801 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:811:13: note: in expansion of macro 'DBG_INT'
+  811 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:820:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  820 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:820:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:824:13: note: in expansion of macro 'DBG_INT'
+  824 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:833:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  833 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:833:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:837:13: note: in expansion of macro 'DBG_INT'
+  837 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:846:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  846 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:846:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:850:13: note: in expansion of macro 'DBG_INT'
+  850 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:859:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  859 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:859:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:863:13: note: in expansion of macro 'DBG_INT'
+  863 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:872:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  872 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:872:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:876:13: note: in expansion of macro 'DBG_INT'
+  876 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:885:13: warning: incompatible implicit declaration of built-in function 'memcpy'
+  885 |             memcpy(&bf, &b_raw, sizeof(float));
+      |             ^~~~~~
+src/VM.c:885:13: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:889:13: note: in expansion of macro 'DBG_INT'
+  889 |             DBG_INT(vm_peek(vm));
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:919:13: note: in expansion of macro 'DBG_INT'
+  919 |             DBG_INT(objRef);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:929:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  929 |                 ERROR_PRINT("GETFIELD error: Invalid object reference: %d\n", objRef);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~
+      |                                                                               |
+      |                                                                               int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:929:73: note: format string is defined here
+  929 |                 ERROR_PRINT("GETFIELD error: Invalid object reference: %d\n", objRef);
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         int
+      |                                                                        %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:960:13: note: in expansion of macro 'DBG_INT'
+  960 |             DBG_INT(objRef);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:966:13: note: in expansion of macro 'DBG_INT'
+  966 |             DBG_INT(value);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:977:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  977 |                 ERROR_PRINT("PUTFIELD error: Invalid object reference: %d\n", objRef);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~
+      |                                                                               |
+      |                                                                               int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:977:73: note: format string is defined here
+  977 |                 ERROR_PRINT("PUTFIELD error: Invalid object reference: %d\n", objRef);
+      |                                                                        ~^
+      |                                                                         |
+      |                                                                         int
+      |                                                                        %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1002:13: note: in expansion of macro 'DBG_INT'
+ 1002 |             DBG_INT(objRef);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1008:13: note: in expansion of macro 'DBG_INT'
+ 1008 |             DBG_INT(value);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1020:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1020 |                 ERROR_PRINT("INVOKEVIRTUAL error: Invalid object reference: %d\n", objRef);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~
+      |                                                                                    |
+      |                                                                                    int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1020:78: note: format string is defined here
+ 1020 |                 ERROR_PRINT("INVOKEVIRTUAL error: Invalid object reference: %d\n", objRef);
+      |                                                                             ~^
+      |                                                                              |
+      |                                                                              int
+      |                                                                             %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1029:29: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+ 1029 |                 ERROR_PRINT("INVOKEVIRTUAL error: Invalid method index in vtable: %u\n", methodIndex);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~
+      |                                                                                          |
+      |                                                                                          uint32_t {aka long unsigned int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1029:84: note: format string is defined here
+ 1029 |                 ERROR_PRINT("INVOKEVIRTUAL error: Invalid method index in vtable: %u\n", methodIndex);
+      |                                                                                   ~^
+      |                                                                                    |
+      |                                                                                    unsigned int
+      |                                                                                   %lu
+In file included from src/VM.c:1:
+src/include/VM.h:18:32: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                ^~~~
+src/VM.c:1039:13: note: in expansion of macro 'DBG_UINT32'
+ 1039 |             DBG_UINT32(vm->ip);
+      |             ^~~~~~~~~~
+src/include/VM.h:18:34: note: format string is defined here
+   18 | #define DBG_UINT32(val) printf("%d", val) // For uint32_t
+      |                                 ~^
+      |                                  |
+      |                                  int
+      |                                 %ld
+src/VM.c:1091:13: warning: implicit declaration of function 'memset' [-Wimplicit-function-declaration]
+ 1091 |             memset(arrayData, 0, size * element_size);
+      |             ^~~~~~
+src/VM.c:1091:13: warning: incompatible implicit declaration of built-in function 'memset'
+src/VM.c:1091:13: note: include '<string.h>' or provide a declaration of 'memset'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1105:13: note: in expansion of macro 'DBG_INT'
+ 1105 |             DBG_INT(size);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1107:13: note: in expansion of macro 'DBG_INT'
+ 1107 |             DBG_INT(arrayRef);
+      |             ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1118:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1118 |                 ERROR_PRINT("ALOAD error: Invalid array reference: %d\n", arrayRef);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~
+      |                                                                           |
+      |                                                                           int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1118:69: note: format string is defined here
+ 1118 |                 ERROR_PRINT("ALOAD error: Invalid array reference: %d\n", arrayRef);
+      |                                                                    ~^
+      |                                                                     |
+      |                                                                     int
+      |                                                                    %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1133:17: note: in expansion of macro 'DBG_INT'
+ 1133 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1135:17: note: in expansion of macro 'DBG_INT'
+ 1135 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1137:17: note: in expansion of macro 'DBG_INT'
+ 1137 |                 DBG_INT(vm_peek(vm));
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:1145:17: warning: incompatible implicit declaration of built-in function 'memcpy'
+ 1145 |                 memcpy(&raw, &fvalue, sizeof(uint32_t));
+      |                 ^~~~~~
+src/VM.c:1145:17: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1148:17: note: in expansion of macro 'DBG_INT'
+ 1148 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1150:17: note: in expansion of macro 'DBG_INT'
+ 1150 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1161:17: note: in expansion of macro 'DBG_INT'
+ 1161 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1163:17: note: in expansion of macro 'DBG_INT'
+ 1163 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1184:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1184 |                 ERROR_PRINT("ASTORE error: Invalid array reference: %d\n", arrayRef);
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~
+      |                                                                            |
+      |                                                                            int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1184:70: note: format string is defined here
+ 1184 |                 ERROR_PRINT("ASTORE error: Invalid array reference: %d\n", arrayRef);
+      |                                                                     ~^
+      |                                                                      |
+      |                                                                      int
+      |                                                                     %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1198:17: note: in expansion of macro 'DBG_INT'
+ 1198 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1200:17: note: in expansion of macro 'DBG_INT'
+ 1200 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1202:17: note: in expansion of macro 'DBG_INT'
+ 1202 |                 DBG_INT(value);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:1209:17: warning: incompatible implicit declaration of built-in function 'memcpy'
+ 1209 |                 memcpy(&fvalue, &value, sizeof(float));
+      |                 ^~~~~~
+src/VM.c:1209:17: note: include '<string.h>' or provide a declaration of 'memcpy'
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1212:17: note: in expansion of macro 'DBG_INT'
+ 1212 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1214:17: note: in expansion of macro 'DBG_INT'
+ 1214 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1224:17: note: in expansion of macro 'DBG_INT'
+ 1224 |                 DBG_INT(arrayRef);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1226:17: note: in expansion of macro 'DBG_INT'
+ 1226 |                 DBG_INT(index);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:1267:31: warning: comparison of integer expressions of different signedness: 'int32_t' {aka 'long int'} and 'size_t' {aka 'unsigned int'} [-Wsign-compare]
+ 1267 |                 if (localsIdx >= vector_size(&vm->locals))
+      |                               ^~
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1269:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1269 |                     ERROR_PRINT("SYS_READ error: Local index out of bounds for buffer storage: %d\n", localsIdx);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~
+      |                                                                                                       |
+      |                                                                                                       int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1269:97: note: format string is defined here
+ 1269 |                     ERROR_PRINT("SYS_READ error: Local index out of bounds for buffer storage: %d\n", localsIdx);
+      |                                                                                                ~^
+      |                                                                                                 |
+      |                                                                                                 int
+      |                                                                                                %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1277:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1277 |                     ERROR_PRINT("SYS_READ error: Invalid file descriptor %d\n", fd);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~
+      |                                                                                 |
+      |                                                                                 int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1277:75: note: format string is defined here
+ 1277 |                     ERROR_PRINT("SYS_READ error: Invalid file descriptor %d\n", fd);
+      |                                                                          ~^
+      |                                                                           |
+      |                                                                           int
+      |                                                                          %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1286:17: note: in expansion of macro 'DBG_INT'
+ 1286 |                 DBG_INT(fd);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1288:17: note: in expansion of macro 'DBG_INT'
+ 1288 |                 DBG_INT(size);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1290:17: note: in expansion of macro 'DBG_INT'
+ 1290 |                 DBG_INT(bytesRead);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/VM.c:1299:31: warning: comparison of integer expressions of different signedness: 'int32_t' {aka 'long int'} and 'size_t' {aka 'unsigned int'} [-Wsign-compare]
+ 1299 |                 if (local_idx >= vector_size(&vm->locals))
+      |                               ^~
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1301:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1301 |                     ERROR_PRINT("SYS_WRITE error: Local index out of bounds for buffer reference: %d\n", local_idx);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~
+      |                                                                                                          |
+      |                                                                                                          int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1301:100: note: format string is defined here
+ 1301 |                     ERROR_PRINT("SYS_WRITE error: Local index out of bounds for buffer reference: %d\n", local_idx);
+      |                                                                                                   ~^
+      |                                                                                                    |
+      |                                                                                                    int
+      |                                                                                                   %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1308:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1308 |                     ERROR_PRINT("SYS_WRITE error: Invalid buffer reference %d\n", bufRef);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~
+      |                                                                                   |
+      |                                                                                   int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1308:77: note: format string is defined here
+ 1308 |                     ERROR_PRINT("SYS_WRITE error: Invalid buffer reference %d\n", bufRef);
+      |                                                                            ~^
+      |                                                                             |
+      |                                                                             int
+      |                                                                            %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1315:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1315 |                     ERROR_PRINT("SYS_WRITE error: Invalid file descriptor %d\n", fd);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~
+      |                                                                                  |
+      |                                                                                  int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1315:76: note: format string is defined here
+ 1315 |                     ERROR_PRINT("SYS_WRITE error: Invalid file descriptor %d\n", fd);
+      |                                                                           ~^
+      |                                                                            |
+      |                                                                            int
+      |                                                                           %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1324:17: note: in expansion of macro 'DBG_INT'
+ 1324 |                 DBG_INT(fd);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1326:17: note: in expansion of macro 'DBG_INT'
+ 1326 |                 DBG_INT(size);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1328:17: note: in expansion of macro 'DBG_INT'
+ 1328 |                 DBG_INT(bytesWritten);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1338:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1338 |                     ERROR_PRINT("SYS_OPEN error: Invalid filename reference %d\n", filenameRef);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~~~~~~~~~~
+      |                                                                                    |
+      |                                                                                    int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1338:78: note: format string is defined here
+ 1338 |                     ERROR_PRINT("SYS_OPEN error: Invalid filename reference %d\n", filenameRef);
+      |                                                                             ~^
+      |                                                                              |
+      |                                                                              int
+      |                                                                             %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1379:17: note: in expansion of macro 'DBG_INT'
+ 1379 |                 DBG_INT(fd);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+In file included from src/include/VM.h:4,
+                 from src/VM.c:1:
+src/VM.c:1389:33: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+ 1389 |                     ERROR_PRINT("SYS_CLOSE error: Invalid file descriptor %d\n", fd);
+      |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  ~~
+      |                                                                                  |
+      |                                                                                  int32_t {aka long int}
+src/include/common.h:15:33: note: in definition of macro 'ERROR_PRINT'
+   15 | #define ERROR_PRINT(...) printf(__VA_ARGS__)
+      |                                 ^~~~~~~~~~~
+src/VM.c:1389:76: note: format string is defined here
+ 1389 |                     ERROR_PRINT("SYS_CLOSE error: Invalid file descriptor %d\n", fd);
+      |                                                                           ~^
+      |                                                                            |
+      |                                                                            int
+      |                                                                           %ld
+In file included from src/VM.c:1:
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1396:17: note: in expansion of macro 'DBG_INT'
+ 1396 |                 DBG_INT(fd);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
+src/include/VM.h:19:29: warning: format '%d' expects argument of type 'int', but argument 2 has type 'int32_t' {aka 'long int'} [-Wformat=]
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                             ^~~~
+src/VM.c:1404:17: note: in expansion of macro 'DBG_INT'
+ 1404 |                 DBG_INT(exitCode);
+      |                 ^~~~~~~
+src/include/VM.h:19:31: note: format string is defined here
+   19 | #define DBG_INT(val) printf("%d", val)
+      |                              ~^
+      |                               |
+      |                               int
+      |                              %ld
