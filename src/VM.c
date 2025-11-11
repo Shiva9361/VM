@@ -66,10 +66,10 @@ void vm_init(VM_t *vm, const vector_t *filedata)
 
     // Initialize fileData (stdin, stdout, stderr)
     vector_resize(&vm->fileData, 10); // Support up to 10 open files
-    if (!stdout)
-    {
-        stdout = fdopen_simple(1);
-    }
+    // if (!stdout)
+    // {
+    //     stdout = fdopen_simple(1);
+    // }
     *(FILE **)vector_get_ptr(&vm->fileData, 0) = stdin;
     *(FILE **)vector_get_ptr(&vm->fileData, 1) = stdout;
     *(FILE **)vector_get_ptr(&vm->fileData, 2) = stderr;
@@ -320,12 +320,13 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                 field.type = (FieldType_t)read_uint8_from_vector(filedata_vec, &classOffset);
 
                 vector_push_back(&cls.fields, &field);
-                string_destroy(&field.name); // field is copied into vector, destroy local copy
+                //  // field is copied into vector, destroy local copy
                 DBG("Field: ");
                 DBG_STR(string_cstr(&field.name));
                 DBG(" Type: ");
                 DBG_INT(field.type);
                 DBG_NL();
+                string_destroy(&field.name);
             }
 
             uint32_t methodCount = read_uint32_from_vector(filedata_vec, &classOffset);
@@ -356,16 +357,17 @@ void vm_load_from_binary(VM_t *vm, const vector_t *filedata_vec)
                 method.isVirtual = true; // Default as in C++
 
                 vector_push_back(&cls.methods, &method);
-                string_destroy(&method.name); // method is copied into vector, destroy local copy
+                //  // method is copied into vector, destroy local copy
                 DBG("Method: ");
                 DBG_STR(string_cstr(&method.name));
                 DBG(" Bytecode Offset: ");
                 DBG_UINT32(method.bytecodeOffset);
                 DBG_NL();
+                string_destroy(&method.name);
             }
 
             vector_push_back(&vm->classes, &cls);
-            class_info_destroy(&cls); // cls is copied into vector, destroy local copy
+            // class_info_destroy(&cls); // cls is copied into vector, destroy local copy
         }
 
         if (classOffset != classMetaEnd)
