@@ -749,7 +749,7 @@ void VM::run()
 
         case Opcode::ALOAD:
         {
-            int index = pop();  // array index
+            int index = pop();    // array index
             int arrayRef = pop(); // local index where array reference is stored
             // int arrayRef = locals.at(arrIdx);
             if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
@@ -792,8 +792,8 @@ void VM::run()
 
         case Opcode::ASTORE:
         {
-            int value = pop();  // value to store
-            int index = pop();  // index in the array
+            int value = pop();    // value to store
+            int index = pop();    // index in the array
             int arrayRef = pop(); // heap index of array
             // int arrayRef = locals.at(arrIdx);
             if (arrayRef < 0 || static_cast<size_t>(arrayRef) >= heap.size())
@@ -860,10 +860,11 @@ void VM::run()
             }
             case Syscall::WRITE:
             {
-                int fd = pop();                 // Stack: file descriptor
-                int size = pop();               // Stack: buffer size
-                int locIdx = pop();             // Stack: buffer index
-                int bufIdx = locals.at(locIdx); // Get buffer index from locals
+                int fd = pop();   // Stack: file descriptor
+                int size = pop(); // Stack: buffer size
+                // int locIdx = pop();             // Stack: buffer index
+                // int bufIdx = locals.at(locIdx); // Get buffer index from locals
+                int bufIdx = pop(); // Stack: buffer index
 
                 if (bufIdx < 0 || static_cast<size_t>(bufIdx) >= heap.size())
                 {

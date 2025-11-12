@@ -116,8 +116,8 @@ public:
     uint32_t top() const;
 
 private:
-    static constexpr int STACK_SIZE = 1024;
-    static constexpr int LOCALS_SIZE = 256;
+    static constexpr int STACK_SIZE = 2048;
+    static constexpr int LOCALS_SIZE = 2048;
     static constexpr int CONST_POOL_SIZE = 256;
 
     std::vector<uint32_t> stack;
