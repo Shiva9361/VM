@@ -452,6 +452,12 @@ void VM::run()
                 throw std::runtime_error("Stack underflow on RET");
             }
 
+            // print stack
+            // for (size_t i = 0; i < stack.size(); i++)
+            // {
+            //     DBG("Stack[" << i << "] = " << stack[i]);
+            // }
+
             uint32_t old_fp = stack[fp];
 
             uint32_t return_ip = stack[fp - 1];
@@ -487,10 +493,12 @@ void VM::run()
             push(static_cast<int>(ip));
             push(static_cast<int>(fp));
 
+            // DBG("CALL pushing return IP = " + std::to_string(ip) + ", old FP = " + std::to_string(fp));
+
             fp = static_cast<int>(stack.size()) - 1;
             ip = methodOffset;
 
-            DBG("CALL to offset " + std::to_string(methodOffset) + ", return IP = " + std::to_string(stack[fp - 1]) + ", FP = " + std::to_string(fp));
+            DBG("CALL to offset " + std::to_string(methodOffset) + ", return IP = " + std::to_string(stack[fp - 1]) + ", FP = " + std::to_string(stack[fp]));
             break;
         }
 
@@ -636,7 +644,7 @@ void VM::run()
             const ClassInfo *cls = *static_cast<const ClassInfo **>(rawMemory);
 
             DBG("GETFIELD, requested index: " + std::to_string((int)fieldIndex) + ", fieldCount: " + std::to_string(cls->fields.size()));
-            DBG("filedIndex" << fieldIndex << " " << cls->fields.size());
+            // DBG("filedIndex" << fieldIndex << " " << cls->fields.size());
             if (fieldIndex >= cls->fields.size())
             {
                 throw std::runtime_error("GETFIELD error: Invalid field index.");
@@ -782,6 +790,7 @@ void VM::run()
             case FieldType::CHAR:
             {
                 char cvalue = *reinterpret_cast<char *>(static_cast<char *>(arrayData) + index * sizeof(char));
+                DBG("ALOAD from array ref " + std::to_string(arrayRef) + " at index " + std::to_string(index) + ", Stack top = " + std::to_string(static_cast<int>(cvalue)));
                 push(static_cast<int>(cvalue));
                 break;
             }
@@ -841,19 +850,28 @@ void VM::run()
             {
             case Syscall::READ:
             {
-                int fd = pop();                                                                      // Stack: file descriptor
-                int size = pop();                                                                    // Stack: buffer size
-                int localsIdx = pop();                                                               // Stack: local index to store buffer address
-                void *rawbuffer = malloc(size + sizeof(void *));                                     // Allocate buffer
-                void *buffer = static_cast<void *>(static_cast<char *>(rawbuffer) + sizeof(void *)); // following heap convention
-                heap.push_back(buffer);
-                locals.at(localsIdx) = heap.size() - 1; // Store buffer index in locals
+                int fd = pop();        // Stack: file descriptor
+                int size = pop();      // Stack: buffer size
+                int localsIdx = pop(); // Stack: local index to store buffer address
+                // void *rawbuffer = malloc(size + sizeof(void *));                                     // Allocate buffer
+                // void *buffer = static_cast<void *>(static_cast<char *>(rawbuffer) + sizeof(void *)); // following heap convention
+                // heap.push_back(buffer);
+                // locals.at(localsIdx) = heap.size() - 1; // Store buffer index in locals
+                // get buf from locals
+                int bufIdx = locals.at(localsIdx);
+                if (bufIdx < 0 || static_cast<size_t>(bufIdx) >= heap.size())
+                {
+                    throw std::runtime_error("SYS_READ error: Invalid buffer index " + std::to_string(bufIdx));
+                }
+                void *buffer = heap.at(bufIdx);
                 if (fileData.at(fd) == nullptr)
                 {
                     throw std::runtime_error("SYS_READ error: Invalid file descriptor " + std::to_string(fd));
                 }
                 int bytesRead = fread(buffer, 1, size, fileData.at(fd));
                 push(bytesRead); // Push number of bytes read onto stack
+                // show content of buffer
+                DBG("Read data" + std::string(static_cast<char *>(buffer), bytesRead));
 
                 DBG("SYS_READ from FD " + std::to_string(fd) + ", Requested Size = " + std::to_string(size) + ", Bytes Read = " + std::to_string(bytesRead));
                 break;
@@ -877,6 +895,13 @@ void VM::run()
                 }
                 int bytesWritten = fwrite(buffer, 1, size, fileData.at(fd));
                 push(bytesWritten); // Push number of bytes written onto stack
+
+                // print stack
+                // for (size_t i = 0; i < stack.size(); i++)
+                // {
+                //     DBG("Stack[" + std::to_string(i) + "] = " + std::to_string(stack.at(i)));
+                // }
+
                 DBG("SYS_WRITE to FD " + std::to_string(fd) + ", Requested Size = " + std::to_string(size) + ", Bytes Written = " + std::to_string(bytesWritten));
                 break;
             }
